@@ -3,6 +3,7 @@ package com.tt.mariage.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -40,6 +41,7 @@ public class Information extends PersonCellTable{
 
 		createNameColumn();
 		createFirstNameColumn();
+		createInfantColumn();
 		
 		HorizontalPanel buttonPanel = new HorizontalPanel();
 		createButtons(buttonPanel);
@@ -112,4 +114,20 @@ public class Information extends PersonCellTable{
         	}
         });
 	}
+	
+	private void createInfantColumn() {
+		// is infant checkbox cell
+        addColumn(personCellTable, new CheckboxCell(), "Infant", new GetValue<Boolean>() {
+        	@Override
+        	public Boolean getValue(Person person) {
+        		return new Boolean(person.isInfant());
+        	}
+        }, new FieldUpdater<Person, Boolean>() {
+        	@Override
+        	public void update(int index, Person person, Boolean value) {
+        		pendingChanges.add(PersonChange.createInfantCommiter(person, value));
+        	}
+        });
+	}
+
 }

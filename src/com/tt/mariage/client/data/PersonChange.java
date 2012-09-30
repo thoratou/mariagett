@@ -32,5 +32,23 @@ public abstract class PersonChange<T> {
 			}
 		};
     }
+
+	public static PersonChange<Boolean> createInfantCommiter(Person person, Boolean value) {
+		return new PersonChange<Boolean>(person, value) {
+			@Override
+			protected void doCommit(Person person, Boolean value) {
+				person.setInfant(value.booleanValue());
+			}
+		};
+	}
+	
+	public static PersonChange<String> createMenuCommiter(Person person, String menu) {
+		return new PersonChange<String>(person, menu) {
+			@Override
+			protected void doCommit(Person person, String menu) {
+				person.setMenu(menu);
+			}
+		};
+	}
 }
 

@@ -3,6 +3,8 @@ package com.tt.mariage.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -39,6 +41,7 @@ public class Meal extends PersonCellTable{
 
 		createNameColumn();
 		createFirstNameColumn();
+		createMealColumn();
 		
 		HorizontalPanel buttonPanel = new HorizontalPanel();
 		createButtons(buttonPanel);
@@ -89,4 +92,25 @@ public class Meal extends PersonCellTable{
         	}
         }, null);
 	}
+	
+	private void createMealColumn() {
+		//meal choice cell
+		List<String> meals = new ArrayList<String>();
+		meals.add("");
+		meals.add("Fish menu");
+		meals.add("Meat menu");
+		meals.add("Children's menu");
+        addColumn(personCellTable, new SelectionCell(meals), "Meal", new GetValue<String>() {
+        	@Override
+        	public String getValue(Person person) {
+        		return person.getMenu();
+        	}
+        }, new FieldUpdater<Person, String>() {
+        	@Override
+        	public void update(int index, Person person, String value) {
+        		pendingChanges.add(PersonChange.createMenuCommiter(person, value));
+        	}
+        });
+	}
+
 }

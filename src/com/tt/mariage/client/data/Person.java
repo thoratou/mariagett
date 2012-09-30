@@ -15,6 +15,7 @@ public class Person{
 	private String name;
 	private String firstname;
 	private boolean isInfant;
+	private String menu;
 	
 	public Person(int id) {
 		this.id = id;
@@ -50,15 +51,17 @@ public class Person{
 	public void setInfant(boolean isInfant) {
 		this.isInfant = isInfant;
 	}
+	
+	public String getMenu() {
+		return menu;
+	}
+
+	public void setMenu(String menu) {
+		this.menu = menu;
+	}
 
     @Override
     public int hashCode() {
       return getId();
-    }
-    
-    public void merge(Person person){
-    	name = person.name;
-    	firstname = person.firstname;
-    	isInfant = person.isInfant;
     }
 }
