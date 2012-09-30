@@ -12,7 +12,9 @@ public class Main implements EntryPoint {
 	public void onModuleLoad() {
 		
 		Window.setMargin("0px");
-
+		
+		Login login = new Login();
+		login.login();
 		
 		VerticalPanel generalPanel = new VerticalPanel();
 		
