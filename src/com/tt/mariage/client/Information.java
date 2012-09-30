@@ -3,6 +3,7 @@ package com.tt.mariage.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.cell.client.ActionCell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
@@ -42,6 +43,7 @@ public class Information extends PersonCellTable{
 		createNameColumn();
 		createFirstNameColumn();
 		createInfantColumn();
+		createRemoveColumn();
 		
 		HorizontalPanel buttonPanel = new HorizontalPanel();
 		createButtons(buttonPanel);
@@ -129,5 +131,20 @@ public class Information extends PersonCellTable{
         	}
         });
 	}
+	
+	private void createRemoveColumn() {
+		addColumn(personCellTable, new ActionCell<Person>("Remove", new ActionCell.Delegate<Person>() {
+			@Override
+			public void execute(Person person) {
+				personTableHandler.removePerson(person);
+		    }
+		}), "Action", new GetValue<Person>() {
+			@Override
+			public Person getValue(Person person) {
+				return person;
+			}
+		}, null);
+	}
+
 
 }

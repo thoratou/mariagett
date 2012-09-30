@@ -64,4 +64,12 @@ public class Person{
     public int hashCode() {
       return getId();
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+    	if(obj instanceof Person){
+    		return ((Person)obj).id == id;
+    	}
+    	return false;
+    }
 }

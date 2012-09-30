@@ -28,6 +28,12 @@ public class PersonTableHandler {
 	    dataProvider.addDataDisplay(display);
     }
 	
+	public void removePerson(Person person) {
+		dataProvider.getList().remove(person);
+		refreshDisplays();
+	}
+
+	
 	public void refreshDisplays() {
 	    dataProvider.refresh();
 	}
@@ -41,4 +47,5 @@ public class PersonTableHandler {
 	protected Person createNewPerson() {
 		return new Person(Person.nextId++);
 	}
+
 }
