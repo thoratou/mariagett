@@ -1,5 +1,6 @@
 package com.tt.mariage.client;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.cell.client.EditTextCell;
@@ -25,6 +26,7 @@ public class Information extends PersonCellTable{
     
 	public Information(PersonTableHandler personTableHandler) {
 	    this.personTableHandler = personTableHandler;
+	    pendingChanges = new ArrayList<PersonChange<?>>();
 
 	    personCellTable = new CellTable<Person>(Person.KEY_PROVIDER);
 	    
