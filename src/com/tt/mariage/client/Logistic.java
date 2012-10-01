@@ -2,13 +2,14 @@ package com.tt.mariage.client;
 
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class Logistic {
 
-	public void setPanel(VerticalPanel logisticPanel) {
+	public void setPanel(Panel logisticPanel) {
 		Label logisticLabel = new Label();
 		logisticLabel.setStyleName("h1");
 		logisticLabel.setText("Logistics");

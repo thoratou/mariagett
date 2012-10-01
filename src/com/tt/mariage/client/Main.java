@@ -2,6 +2,7 @@ package com.tt.mariage.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.tt.mariage.client.data.PersonTableHandler;
@@ -17,6 +18,7 @@ public class Main implements EntryPoint {
 		login.login();
 		
 		VerticalPanel generalPanel = new VerticalPanel();
+		generalPanel.setWidth("100%");
 		
 		//Person table handler
 		PersonTableHandler personTableHandler = new PersonTableHandler();
@@ -39,7 +41,9 @@ public class Main implements EntryPoint {
 		
 		///Assembly
 		generalPanel.add(infoPanel);
+		generalPanel.add(new HTML("<br/><br/>"));
 		generalPanel.add(mealPanel);
+		generalPanel.add(new HTML("<br/><br/>"));
 		generalPanel.add(logisticPanel);
 		
 		

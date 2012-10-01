@@ -1,17 +1,27 @@
 package com.tt.mariage.client;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.tt.mariage.client.services.LoginInfo;
+import com.tt.mariage.client.services.LoginService;
+import com.tt.mariage.client.services.LoginServiceAsync;
 
 public class Login {
+	LoginServiceAsync loginService = GWT.create(LoginService.class);
+	
 	void login(){
 		
 		final DialogBox dialogBox = new DialogBox();
@@ -21,51 +31,56 @@ public class Login {
 	    
 	    VerticalPanel loginPanel = new VerticalPanel();
 	    
-	    //user
-	    HorizontalPanel userPanel = new HorizontalPanel();
-	    
-	    Label userLabel = new Label();
-	    userLabel.setText("User :");
-	    userPanel.add(userLabel);
-	    
 	    final TextBox userInput = new TextBox();
-	    userPanel.add(userInput);
-	    
-	    
-	    //pwd
-	    HorizontalPanel pwdPanel = new HorizontalPanel();
-	    
-	    Label pwdLabel = new Label();
-	    pwdLabel.setText("Password :");
-	    pwdPanel.add(pwdLabel);
-	    
 	    final PasswordTextBox pwdInput = new PasswordTextBox();
-	    pwdPanel.add(pwdInput);
+	    
+		FlexTable loginLayout = new FlexTable();
+		{
+		    loginLayout.setCellSpacing(6);
+		    FlexCellFormatter cellFormatter = loginLayout.getFlexCellFormatter();
+		    cellFormatter.setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_LEFT);
+		}
+		
+	    loginLayout.setWidget(0, 0, new HTML("<b>Mail : </b>"));
+	    loginLayout.setWidget(0, 1, userInput);
+	    loginLayout.setWidget(1, 0, new HTML("<b>Password : </b>"));
+	    loginLayout.setWidget(1, 1, pwdInput);
 	    
 	    //buttons
-	    HorizontalPanel buttonsPanel = new HorizontalPanel();
+		FlexTable buttonLayout = new FlexTable();
+		{
+		    loginLayout.setCellSpacing(6);
+		    FlexCellFormatter cellFormatter = loginLayout.getFlexCellFormatter();
+		    cellFormatter.setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_LEFT);
+		}
 	    
 	    Button loginButton = new Button("Log in", new ClickHandler() {
 	    	public void onClick(ClickEvent event) {
 	    		String user = userInput.getText();
 	    		String pwd = pwdInput.getText();
-	    		if("test".equals(user) && "test".equals(pwd)){
-	    			dialogBox.hide();
-	    		}
+	    		
+	    		loginService.login(user, pwd, new AsyncCallback<LoginInfo>() {
+	    			public void onFailure(Throwable error) {
+	    				Window.alert("Server error, please retry");
+	    			}
+	    			public void onSuccess(LoginInfo result) {
+	    				if(result.isLoggedIn()) {
+	    					dialogBox.hide();
+	    				}
+	    			}
+	    		});
 	    	}
 	    });
-	    buttonsPanel.add(loginButton);
+	    buttonLayout.setWidget(0, 0, loginButton);
 	    
 	    Button registerButton = new Button("Register / Reset Password", new ClickHandler() {
 	    	public void onClick(ClickEvent event) {
 	    	}
 	    });
-	    buttonsPanel.add(registerButton);
-
+	    buttonLayout.setWidget(0, 1, registerButton);
 	    
-	    loginPanel.add(userPanel);
-	    loginPanel.add(pwdPanel);
-	    loginPanel.add(buttonsPanel);
+	    loginPanel.add(loginLayout);
+	    loginPanel.add(buttonLayout);
 	    
 	    dialogBox.add(loginPanel);
 	    
