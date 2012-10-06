@@ -3,7 +3,8 @@ package com.tt.mariage.client.login;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.i18n.client.LocaleInfo;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -12,6 +13,8 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -24,6 +27,16 @@ import com.tt.mariage.client.services.RegisterService;
 import com.tt.mariage.client.services.RegisterServiceAsync;
 
 public class Login {
+	public interface ImageResources extends ClientBundle {	 
+	    public static final ImageResources INSTANCE = GWT.create(ImageResources.class);
+	 
+	    @Source("france.png")
+	    ImageResource france();
+	 
+	    @Source("united-kingdom.png")
+	    ImageResource unitedKingdom();
+	}
+	
 	LoginServiceAsync loginService = GWT.create(LoginService.class);
 	RegisterServiceAsync registerService = GWT.create(RegisterService.class);
 	LoginConstants loginConstants = GWT.create(LoginConstants.class);
@@ -113,8 +126,46 @@ public class Login {
 	    
 	    buttonLayout.setWidget(0, 1, registerButton);
 	    
+	    //language
+		FlexTable langLayout = new FlexTable();
+		{
+		    loginLayout.setCellSpacing(6);
+		    FlexCellFormatter cellFormatter = loginLayout.getFlexCellFormatter();
+		    cellFormatter.setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_LEFT);
+		}
+		
+		Image frImage = new Image(ImageResources.INSTANCE.france());
+		frImage.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				String url = "index_fr.html";
+				if (!GWT.isProdMode()) {
+					url += "?gwt.codesvr=" + Window.Location.getParameter("gwt.codesvr");
+				}
+				Window.Location.assign(url);
+			}
+		});
+
+
+		Image ukImage = new Image(ImageResources.INSTANCE.unitedKingdom());
+		ukImage.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				String url = "index.html";
+				if (!GWT.isProdMode()) {
+					url += "?gwt.codesvr=" + Window.Location.getParameter("gwt.codesvr");
+				}
+				Window.Location.assign(url);
+			}
+		});
+		
+		langLayout.setWidget(0, 0, frImage);
+		langLayout.setWidget(0, 1, ukImage);
+		
 	    loginPanel.add(loginLayout);
 	    loginPanel.add(buttonLayout);
+	    loginPanel.add(new HTML("<br/>"));
+	    loginPanel.add(langLayout);
 	    
 	    dialogBox.add(loginPanel);
 	    
