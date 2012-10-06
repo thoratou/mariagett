@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module rename-to='mariagett'>
   <inherits name='com.google.gwt.user.User'/>
+  <inherits name="com.google.gwt.i18n.I18N"/>
   <inherits name="com.sensei.themes.mytheme.Mytheme"/>
+  
+  <extend-property name="locale" values="fr"/>
+  <extend-property name="locale" values="en"/>
+  <set-property-fallback name="locale" value="en"/>
+  
   <source path='client'/>
   <source path='client/data'/>
   <source path='client/services'/>
   <source path='shared'/>
+  
   <entry-point class="com.tt.mariage.client.Main"/>
 </module>

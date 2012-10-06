@@ -1,8 +1,10 @@
-package com.tt.mariage.client;
+package com.tt.mariage.client.login;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.LocaleInfo;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -24,9 +26,9 @@ import com.tt.mariage.client.services.RegisterServiceAsync;
 public class Login {
 	LoginServiceAsync loginService = GWT.create(LoginService.class);
 	RegisterServiceAsync registerService = GWT.create(RegisterService.class);
+	LoginConstants loginConstants = GWT.create(LoginConstants.class);
 	
-	void login(){
-		
+	public void login(){
 		final DialogBox dialogBox = new DialogBox();
 		dialogBox.setText("Login");
 	    dialogBox.setGlassEnabled(true);
@@ -44,9 +46,9 @@ public class Login {
 		    cellFormatter.setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_LEFT);
 		}
 		
-	    loginLayout.setWidget(0, 0, new HTML("<b>Mail : </b>"));
+	    loginLayout.setWidget(0, 0, new HTML("<b>"+loginConstants.mailText()+" : </b>"));
 	    loginLayout.setWidget(0, 1, userInput);
-	    loginLayout.setWidget(1, 0, new HTML("<b>Password : </b>"));
+	    loginLayout.setWidget(1, 0, new HTML("<b>"+loginConstants.passwordText()+" : </b>"));
 	    loginLayout.setWidget(1, 1, pwdInput);
 	    final HTML messageLabel = new HTML();
 	    loginLayout.setWidget(2, 0, messageLabel);
@@ -61,14 +63,14 @@ public class Login {
 		    cellFormatter.setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_LEFT);
 		}
 	    
-	    Button loginButton = new Button("Log in", new ClickHandler() {
+	    Button loginButton = new Button(loginConstants.loginButton(), new ClickHandler() {
 	    	public void onClick(ClickEvent event) {
 	    		String user = userInput.getText();
 	    		String pwd = pwdInput.getText();
 	    		
 	    		loginService.login(user, pwd, new AsyncCallback<LoginInfo>() {
 	    			public void onFailure(Throwable error) {
-	    				messageLabel.setHTML("<b>Server error, please retry</b>");
+	    				messageLabel.setHTML("<font color=red>"+loginConstants.generalFailureMessage()+"</font>");
 	    			    loginLayout.getRowFormatter().setVisible(2, true);
 	    			}
 	    			public void onSuccess(LoginInfo result) {
@@ -81,18 +83,23 @@ public class Login {
 	    });
 	    buttonLayout.setWidget(0, 0, loginButton);
 	    
-	    Button registerButton = new Button("Register / Reset Password", new ClickHandler() {
+	    Button registerButton = new Button(loginConstants.registerButton(), new ClickHandler() {
 	    	public void onClick(ClickEvent event) {
-	    		String user = userInput.getText();
+				messageLabel.setHTML("<font color=blue>"+loginConstants.registeryInProgressMessage()+"</font>");
+			    loginLayout.getRowFormatter().setVisible(2, true);	    		
 	    		
+	    		String user = userInput.getText();
 	    		registerService.register(user, new AsyncCallback<RegisterInfo>() {
 	    			public void onFailure(Throwable error) {
-	    				messageLabel.setHTML("Server error, please retry");
+	    				messageLabel.setHTML("<font color=red>"+loginConstants.generalFailureMessage()+"</font>");
 	    			    loginLayout.getRowFormatter().setVisible(2, true);
 	    			}
 	    			public void onSuccess(RegisterInfo result) {
 	    				if(result.isRegistered()) {
-		    				messageLabel.setHTML("<font color=green>"+result.getMessage()+"</font>");
+		    				messageLabel.setHTML(	"<font color=green>"+
+		    										loginConstants.registeryDoneFirstPart()+" "+result.getMail()+"<br/>"+
+		    										loginConstants.registeryDoneSecondPart()+
+		    										"</font>");
 		    			    loginLayout.getRowFormatter().setVisible(2, true);
 	    				}
 	    				else{

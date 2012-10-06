@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.tt.mariage.client.data.PersonTableHandler;
+import com.tt.mariage.client.login.Login;
 
 
 public class Main implements EntryPoint {
