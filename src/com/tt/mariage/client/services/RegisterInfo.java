@@ -2,20 +2,20 @@ package com.tt.mariage.client.services;
 
 import java.io.Serializable;
 
-public class LoginInfo implements Serializable {
+public class RegisterInfo implements Serializable {
 
 	private static final long serialVersionUID = 6063046451147717561L;
 
-	private boolean loggedIn = false;
+	private boolean registered = false;
 	private String mail;
 	private String message;
 
-	public boolean isLoggedIn() {
-		return loggedIn;
+	public boolean isRegistered() {
+		return registered;
 	}
 
-	public void setLoggedIn(boolean loggedIn) {
-		this.loggedIn = loggedIn;
+	public void setRegistered(boolean registered) {
+		this.registered = registered;
 	}
 
 	public String getMail() {
@@ -33,4 +33,5 @@ public class LoginInfo implements Serializable {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+
 }

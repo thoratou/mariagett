@@ -16,6 +16,10 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
     	loginInfo.setLoggedIn(true);
     	loginInfo.setMail(mail);
     }
+    else{
+    	loginInfo.setLoggedIn(false);
+    	loginInfo.setMessage("Invalid mail and/or password");
+    }
     
     return loginInfo;
   }
