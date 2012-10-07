@@ -1,5 +1,14 @@
 package com.tt.mariage.server;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
@@ -53,6 +62,9 @@ public class RegisterServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	private RandomString passwordGenerator = new RandomString();
+	private Connection connection = null;
+	
+	private CommonService commonService = new CommonService();
 
 	public RegisterInfo register(String mail) {
 		RegisterInfo registerInfo = new RegisterInfo();
@@ -68,40 +80,9 @@ public class RegisterServiceImpl extends RemoteServiceServlet implements
 	    	String newPassword = passwordGenerator.nextString();
 	    	
 			try {
-		    	//general settings
-				Properties props = new Properties();
-				props.put("mail.smtp.auth", "true");
-				props.put("mail.smtp.starttls.enable", "true");
-				props.put("mail.smtp.host", "smtp.gmail.com");
-				props.put("mail.smtp.port", "587");
+				sendMail(mail, newPassword);
 				
-				Session session = Session.getInstance(props,
-					new Authenticator() {
-						protected PasswordAuthentication getPasswordAuthentication() {
-							return new PasswordAuthentication("mariage.thanh.thomas@gmail.com", "04mai2013");
-						}
-					}
-				);
-				
-				Message message = new MimeMessage(session);
-				
-				//from
-				message.setFrom(new InternetAddress("mariage.thanh.thomas@gmail.com"));
-				
-				//to
-				InternetAddress[] internetAddresses = new InternetAddress[1];
-				internetAddresses[0] = new InternetAddress(mail);
-				message.setRecipients(Message.RecipientType.TO, internetAddresses);
-				
-				//content
-				message.setSubject("test");
-				
-				message.setText("password :\n"+newPassword);
-				message.setHeader("X-Mailer", "Java");
-				message.setSentDate(new Date());
-				
-				//send message
-				Transport.send(message);
+				updateDatabase(mail, newPassword);
 	
 				//report sending
 		    	registerInfo.setRegistered(true);
@@ -109,37 +90,118 @@ public class RegisterServiceImpl extends RemoteServiceServlet implements
 		    	
 			} catch (AddressException e) {
 		    	registerInfo.setRegistered(false);
-		    	registerInfo.setMessage(convertException(e));
+		    	registerInfo.setMessage(commonService.convertException(e));
 			} catch (MessagingException e) {
 		    	registerInfo.setRegistered(false);
-		    	registerInfo.setMessage(convertException(e));
+		    	registerInfo.setMessage(commonService.convertException(e));
+			} catch (ClassNotFoundException e) {
+		    	registerInfo.setRegistered(false);
+		    	registerInfo.setMessage(commonService.convertException(e));
+			} catch (SQLException e) {
+		    	registerInfo.setRegistered(false);
+		    	registerInfo.setMessage(commonService.convertException(e));
+			} catch (NoSuchAlgorithmException e) {
+		    	registerInfo.setRegistered(false);
+		    	registerInfo.setMessage(commonService.convertException(e));
+			} catch (UnsupportedEncodingException e) {
+		    	registerInfo.setRegistered(false);
+		    	registerInfo.setMessage(commonService.convertException(e));
 			}
+		    finally
+		    {
+				try
+				{
+					if(connection != null){
+						connection.close();
+						connection = null;
+					}
+				}
+				catch(SQLException e)
+				{
+			    	registerInfo.setMessage(commonService.convertException(e));
+				}
+		    }
 	    }
 	    
 	    return registerInfo;
 	}
 	
-	private String convertException(Exception exception){
-		String ret = exception.getMessage()+"<br/>";
-		ret+=convertStackTrace(exception.getStackTrace());
-		return ret;
+	private void sendMail(String mail, String password) throws AddressException, MessagingException{
+    	//general settings
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+		
+		Session session = Session.getInstance(props,
+			new Authenticator() {
+				protected PasswordAuthentication getPasswordAuthentication() {
+					return new PasswordAuthentication("mariage.thanh.thomas@gmail.com", "04mai2013");
+				}
+			}
+		);
+		
+		Message message = new MimeMessage(session);
+		
+		//from
+		message.setFrom(new InternetAddress("mariage.thanh.thomas@gmail.com"));
+		
+		//to
+		InternetAddress[] internetAddresses = new InternetAddress[1];
+		internetAddresses[0] = new InternetAddress(mail);
+		message.setRecipients(Message.RecipientType.TO, internetAddresses);
+		
+		//content
+		message.setSubject("test");
+		
+		message.setText("password :\n"+password);
+		message.setHeader("X-Mailer", "Java");
+		message.setSentDate(new Date());
+		
+		//send message
+		Transport.send(message);
 	}
 	
-	private String convertStackTrace(StackTraceElement[] elements){
-		String ret = "";
-		for(int i=0; i!=elements.length; ++i){
-			ret += "[";
-			ret += elements[i].getClassName();
-			ret += ".";
-			ret += elements[i].getMethodName();
-			ret += " / ";
-			ret += elements[i].getFileName();
-			ret += "#";
-			ret += elements[i].getLineNumber();
-			ret += "]";
-			if(i != elements.length)
-				ret+= "<br/>";
+	private void updateDatabase(String mail, String newPassword) throws ClassNotFoundException, SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+		Class.forName("org.sqlite.JDBC");
+		String home = System.getenv("MARIAGETT_HOME");
+		
+		connection = DriverManager.getConnection("jdbc:sqlite:"+home+"/mariagett.sqlite");
+		Statement statement = connection.createStatement();
+		statement.setQueryTimeout(10);
+		  
+		//check if user exit
+		ResultSet rs = statement.executeQuery("select count(*) from USERS where MAIL=\""+mail+"\"");
+		int count = 0;
+		while(rs.next())
+		{
+			count = rs.getInt("count(*)");
 		}
-		return ret;
-	}
+		rs.close();
+		
+		MessageDigest digest = MessageDigest.getInstance("SHA-1");
+		digest.reset();
+        digest.update(newPassword.getBytes());
+        byte[] sha1 = digest.digest();
+        
+		if(count == 0){
+			//doesn't exist => create it
+	        PreparedStatement createStatement = connection.prepareStatement("insert into USERS values(?, ?, null)");
+	        createStatement.setQueryTimeout(10);
+	        createStatement.setString(1, mail);
+	        createStatement.setBytes(2, sha1);
+	        createStatement.executeUpdate();
+	        createStatement.close();
+		}
+		else{
+			//exists => update password
+	        PreparedStatement updateStatement = connection.prepareStatement("update USERS set PASSWORD=? where MAIL=?");
+	        updateStatement.setQueryTimeout(10);
+	        updateStatement.setString(2, mail);
+	        updateStatement.setBytes(1, sha1);
+	        updateStatement.executeUpdate();
+	        updateStatement.close();
+		}
+	}	
 }

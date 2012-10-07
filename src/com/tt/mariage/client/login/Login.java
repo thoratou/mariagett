@@ -13,13 +13,13 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.tt.mariage.client.services.LoginInfo;
+import com.tt.mariage.client.services.LoginInfo.Status;
 import com.tt.mariage.client.services.LoginService;
 import com.tt.mariage.client.services.LoginServiceAsync;
 import com.tt.mariage.client.services.RegisterInfo;
@@ -87,8 +87,28 @@ public class Login {
 	    			    loginLayout.getRowFormatter().setVisible(2, true);
 	    			}
 	    			public void onSuccess(LoginInfo result) {
-	    				if(result.isLoggedIn()) {
+	    				if(result.getStatus() == Status.LoggedIn) {
 	    					dialogBox.hide();
+	    				}
+	    				else if(result.getStatus() == Status.MissingMail) {
+		    				messageLabel.setHTML("<font color=red>"+loginConstants.logginMissingMailMessage()+"</font>");
+		    			    loginLayout.getRowFormatter().setVisible(2, true);
+	    				}
+	    				else if(result.getStatus() == Status.MissingPassword) {
+		    				messageLabel.setHTML("<font color=red>"+loginConstants.logginMissingPasswordMessage()+"</font>");
+		    			    loginLayout.getRowFormatter().setVisible(2, true);
+	    				}
+	    				else if(result.getStatus() == Status.InvalidMail) {
+		    				messageLabel.setHTML("<font color=red>"+loginConstants.logginInvalidMailMessage()+"</font>");
+		    			    loginLayout.getRowFormatter().setVisible(2, true);
+	    				}
+	    				else if(result.getStatus() == Status.InvalidPassword) {
+		    				messageLabel.setHTML("<font color=red>"+loginConstants.logginInvalidPasswordMessage()+"</font>");
+		    			    loginLayout.getRowFormatter().setVisible(2, true);
+	    				}
+	    				else if(result.getStatus() == Status.InternalError || result.getStatus() == Status.Undef) {
+		    				messageLabel.setHTML("<font color=red>"+loginConstants.generalFailureMessage()+"<br/>"+result.getMessage()+"</font>");
+		    			    loginLayout.getRowFormatter().setVisible(2, true);
 	    				}
 	    			}
 	    		});

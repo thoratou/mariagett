@@ -5,17 +5,27 @@ import java.io.Serializable;
 public class LoginInfo implements Serializable {
 
 	private static final long serialVersionUID = 6063046451147717561L;
+	
+	public enum Status{
+		Undef,
+		LoggedIn,
+		MissingMail,
+		MissingPassword,
+		InvalidMail,
+		InvalidPassword,
+		InternalError
+	};
 
-	private boolean loggedIn = false;
+	private Status status = Status.Undef;
 	private String mail;
 	private String message;
 
-	public boolean isLoggedIn() {
-		return loggedIn;
+	public Status getStatus() {
+		return status;
 	}
 
-	public void setLoggedIn(boolean loggedIn) {
-		this.loggedIn = loggedIn;
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	public String getMail() {
