@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="ImageViewer" default="all" basedir="C:\Users\thoratou\workspace-mariage\MariageTT">
+	<description>
+		This is build file for GWT module 'com.tt.mariage.MariageTT' deployment.
+		GWT Designer generates it each time when you initiate deployment.
+		
+		You can use this file later for manual deployment, but keep in mind, that
+		classpath is hardcoded in it, so after changes in classpath you should
+		regenerate build file.
+	</description>
+
+	<property name="gwt.home" value="E:/eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.v201208080120-rel-r37/gwt-2.4.0" />
+	<property name="gwt.module.id" value="com.tt.mariage.MariageTT" />
+	<property name="war.name" value="MariageTT.war" />
+
+	<target name="jars" description="Package up the module project and required projects as jars">
+		<mkdir dir="war/WEB-INF/lib" />
+		<!--=== MariageTT ===-->
+		<jar destfile='war/WEB-INF/lib/MariageTT.jar'>
+			<fileset dir="C:/Users/thoratou/workspace-mariage/MariageTT/src">
+				<include name="**"/>
+			</fileset>
+			<fileset dir="C:/Users/thoratou/workspace-mariage/MariageTT/war/WEB-INF/classes">
+				<include name="**/*.class"/>
+			</fileset>
+		</jar>
+		<copy todir='war'>
+			<fileset file="C:/Users/thoratou/workspace-mariage/MariageTT/src/com/tt/mariage/*.html"/>
+		</copy>	
+		<copy todir='war/WEB-INF/lib'>
+			<fileset file="E:\eclipse\plugins\com.google.gwt.eclipse.sdkbundle_2.4.0.v201208080120-rel-r37\gwt-2.4.0\gwt-servlet.jar"/>
+			<fileset file="E:\eclipse\plugins\com.google.gwt.eclipse.sdkbundle_2.4.0.v201208080120-rel-r37\gwt-2.4.0\validation-api-1.0.0.GA-sources.jar"/>
+			<fileset file="E:\eclipse\plugins\com.google.gwt.eclipse.sdkbundle_2.4.0.v201208080120-rel-r37\gwt-2.4.0\validation-api-1.0.0.GA.jar"/>
+			<fileset file="C:\Users\thoratou\workspace-mariage\MariageTT\gwttheme.jar"/>
+			<fileset file="C:\Users\thoratou\workspace-mariage\MariageTT\mailapi.jar"/>
+			<fileset file="C:\Users\thoratou\workspace-mariage\MariageTT\smtp.jar"/>
+			<fileset file="C:\Users\thoratou\workspace-mariage\MariageTT\sqlite-jdbc-3.7.2.jar"/>
+		</copy>		
+	</target>
+
+	<target name="gwt-compile" description="Compile to JavaScript">
+		<java classname="com.google.gwt.dev.Compiler" fork="yes" failonerror="true" maxmemory="256m">
+			<classpath>
+				<pathelement location="C:/Users/thoratou/workspace-mariage/MariageTT/src" />
+				<pathelement location="C:/Users/thoratou/workspace-mariage/MariageTT/war/WEB-INF/classes" />
+				<pathelement location="E:/eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.v201208080120-rel-r37/gwt-2.4.0/gwt-user.jar" />
+				<pathelement location="E:/eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.v201208080120-rel-r37/gwt-2.4.0/gwt-dev.jar" />
+				<pathelement location="E:/eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.v201208080120-rel-r37/gwt-2.4.0/validation-api-1.0.0.GA-sources.jar" />
+				<pathelement location="E:/eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.v201208080120-rel-r37/gwt-2.4.0/validation-api-1.0.0.GA.jar" />
+				<pathelement location="C:/Users/thoratou/workspace-mariage/MariageTT/gwttheme.jar" />
+				<pathelement location="C:/Users/thoratou/workspace-mariage/MariageTT/mailapi.jar" />
+				<pathelement location="C:/Users/thoratou/workspace-mariage/MariageTT/smtp.jar" />
+				<pathelement location="C:/Users/thoratou/workspace-mariage/MariageTT/sqlite-jdbc-3.7.2.jar" />
+			</classpath>
+			<arg value="-style"/>
+			<arg value="OBFUSCATED"/>
+			<arg value="${gwt.module.id}" />
+		</java>
+	</target>
+
+	<target name="war" depends="gwt-compile, jars">
+		<delete file="${war.name}" />
+		<jar destfile="${war.name}" basedir="war" duplicate="preserve" />
+	</target>
+	
+	<target name="deploy" depends="war">
+		<move file="${war.name}" todir="C:/Users/thoratou/Desktop" />
+	</target>
+
+	<target name="all" depends="deploy" />
+
+</project>
