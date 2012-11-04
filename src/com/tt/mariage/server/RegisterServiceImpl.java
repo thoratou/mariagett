@@ -25,6 +25,7 @@ import javax.mail.internet.MimeMessage;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.tt.mariage.client.services.RegisterInfo;
+import com.tt.mariage.client.services.RegisterInfo.Status;
 import com.tt.mariage.client.services.RegisterService;
 
 public class RegisterServiceImpl extends RemoteServiceServlet implements
@@ -70,7 +71,7 @@ public class RegisterServiceImpl extends RemoteServiceServlet implements
 		RegisterInfo registerInfo = new RegisterInfo();
 	
 	    if((mail == null) || ("".equals(mail))){
-	    	registerInfo.setRegistered(false);
+	    	registerInfo.setStatus(Status.MissingMail);
 	    	registerInfo.setMail("");
 	    	registerInfo.setMessage("please fill your mail address");  	
 	    }
@@ -85,26 +86,26 @@ public class RegisterServiceImpl extends RemoteServiceServlet implements
 				updateDatabase(mail, newPassword);
 	
 				//report sending
-		    	registerInfo.setRegistered(true);
+		    	registerInfo.setStatus(Status.Registered);
 		    	registerInfo.setMessage("mail sent to "+mail+".<br/>please check your mailbox to get the new password.");
 		    	
 			} catch (AddressException e) {
-		    	registerInfo.setRegistered(false);
+		    	registerInfo.setStatus(Status.InternalError);
 		    	registerInfo.setMessage(commonService.convertException(e));
 			} catch (MessagingException e) {
-		    	registerInfo.setRegistered(false);
+		    	registerInfo.setStatus(Status.InternalError);
 		    	registerInfo.setMessage(commonService.convertException(e));
 			} catch (ClassNotFoundException e) {
-		    	registerInfo.setRegistered(false);
+		    	registerInfo.setStatus(Status.InternalError);
 		    	registerInfo.setMessage(commonService.convertException(e));
 			} catch (SQLException e) {
-		    	registerInfo.setRegistered(false);
+		    	registerInfo.setStatus(Status.InternalError);
 		    	registerInfo.setMessage(commonService.convertException(e));
 			} catch (NoSuchAlgorithmException e) {
-		    	registerInfo.setRegistered(false);
+		    	registerInfo.setStatus(Status.InternalError);
 		    	registerInfo.setMessage(commonService.convertException(e));
 			} catch (UnsupportedEncodingException e) {
-		    	registerInfo.setRegistered(false);
+		    	registerInfo.setStatus(Status.InternalError);
 		    	registerInfo.setMessage(commonService.convertException(e));
 			}
 		    finally

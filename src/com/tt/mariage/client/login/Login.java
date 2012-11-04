@@ -14,13 +14,11 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.tt.mariage.client.services.LoginInfo;
-import com.tt.mariage.client.services.LoginInfo.Status;
 import com.tt.mariage.client.services.LoginService;
 import com.tt.mariage.client.services.LoginServiceAsync;
 import com.tt.mariage.client.services.RegisterInfo;
@@ -99,26 +97,26 @@ public class Login {
 	    			    loginLayout.getRowFormatter().setVisible(2, true);
 	    			}
 	    			public void onSuccess(LoginInfo result) {
-	    				if(result.getStatus() == Status.LoggedIn) {
+	    				if(result.getStatus() == LoginInfo.Status.LoggedIn) {
 	    					dialogBox.hide();
 	    				}
-	    				else if(result.getStatus() == Status.MissingMail) {
+	    				else if(result.getStatus() == LoginInfo.Status.MissingMail) {
 		    				messageLabel.setHTML("<font color=red>"+loginConstants.logginMissingMailMessage()+"</font>");
 		    			    loginLayout.getRowFormatter().setVisible(2, true);
 	    				}
-	    				else if(result.getStatus() == Status.MissingPassword) {
+	    				else if(result.getStatus() == LoginInfo.Status.MissingPassword) {
 		    				messageLabel.setHTML("<font color=red>"+loginConstants.logginMissingPasswordMessage()+"</font>");
 		    			    loginLayout.getRowFormatter().setVisible(2, true);
 	    				}
-	    				else if(result.getStatus() == Status.InvalidMail) {
+	    				else if(result.getStatus() == LoginInfo.Status.InvalidMail) {
 		    				messageLabel.setHTML("<font color=red>"+loginConstants.logginInvalidMailMessage()+"</font>");
 		    			    loginLayout.getRowFormatter().setVisible(2, true);
 	    				}
-	    				else if(result.getStatus() == Status.InvalidPassword) {
+	    				else if(result.getStatus() == LoginInfo.Status.InvalidPassword) {
 		    				messageLabel.setHTML("<font color=red>"+loginConstants.logginInvalidPasswordMessage()+"</font>");
 		    			    loginLayout.getRowFormatter().setVisible(2, true);
 	    				}
-	    				else if(result.getStatus() == Status.InternalError || result.getStatus() == Status.Undef) {
+	    				else if(result.getStatus() == LoginInfo.Status.InternalError || result.getStatus() == LoginInfo.Status.Undef) {
 		    				messageLabel.setHTML("<font color=red>"+loginConstants.generalFailureMessage()+"<br/>"+result.getMessage()+"</font>");
 		    			    loginLayout.getRowFormatter().setVisible(2, true);
 	    				}
@@ -140,16 +138,20 @@ public class Login {
 	    			    loginLayout.getRowFormatter().setVisible(2, true);
 	    			}
 	    			public void onSuccess(RegisterInfo result) {
-	    				if(result.isRegistered()) {
+	    				if(result.getStatus() == RegisterInfo.Status.Registered) {
 		    				messageLabel.setHTML(	"<font color=green>"+
 		    										loginConstants.registeryDoneFirstPart()+" "+result.getMail()+"<br/>"+
 		    										loginConstants.registeryDoneSecondPart()+
 		    										"</font>");
 		    			    loginLayout.getRowFormatter().setVisible(2, true);
 	    				}
-	    				else{
-		    				messageLabel.setHTML("<font color=red>"+result.getMessage()+"</font>");
-		    			    loginLayout.getRowFormatter().setVisible(2, true);	    					
+	    				else if(result.getStatus() == RegisterInfo.Status.MissingMail) {
+		    				messageLabel.setHTML("<font color=red>"+loginConstants.logginMissingMailMessage()+"</font>");
+		    			    loginLayout.getRowFormatter().setVisible(2, true);
+	    				}
+	    				else if(result.getStatus() == RegisterInfo.Status.InternalError || result.getStatus() == RegisterInfo.Status.Undef) {
+		    				messageLabel.setHTML("<font color=red>"+loginConstants.generalFailureMessage()+"<br/>"+result.getMessage()+"</font>");
+		    			    loginLayout.getRowFormatter().setVisible(2, true);
 	    				}
 	    			}
 	    		});

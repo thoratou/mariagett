@@ -4,18 +4,25 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class RegisterInfo implements IsSerializable {
 
-	private boolean registered;
+	public enum Status{
+		Undef,
+		Registered,
+		MissingMail,
+		InternalError
+	};
+	
+	private int status;
 	private String mail;
 	private String message;
 	
 	public RegisterInfo() {}
 
-	public boolean isRegistered() {
-		return registered;
+	public Status getStatus() {
+		return Status.values()[status];
 	}
 
-	public void setRegistered(boolean registered) {
-		this.registered = registered;
+	public void setStatus(Status status) {
+		this.status = status.ordinal();
 	}
 
 	public String getMail() {
