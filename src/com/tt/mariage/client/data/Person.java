@@ -1,8 +1,9 @@
 package com.tt.mariage.client.data;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 
-public class Person{
+public class Person implements IsSerializable{
 	public static int nextId = 0;
 	
 	public static final ProvidesKey<Person> KEY_PROVIDER = new ProvidesKey<Person>() {
@@ -17,11 +18,23 @@ public class Person{
 	private boolean isInfant;
 	private String menu;
 	
+	public Person() {
+		this.id = -1;
+		name = new String();
+		firstname = new String();
+		isInfant = false;
+	}
+
+	
 	public Person(int id) {
 		this.id = id;
 		name = new String();
 		firstname = new String();
 		isInfant = false;
+	}
+	
+	public void setId(int id){
+		this.id = id;
 	}
 	
 	public int getId() {

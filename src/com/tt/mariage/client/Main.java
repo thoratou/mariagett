@@ -6,7 +6,10 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.tt.mariage.client.data.PersonTableHandler;
+import com.tt.mariage.client.information.Information;
 import com.tt.mariage.client.login.Login;
+import com.tt.mariage.client.logistic.Logistic;
+import com.tt.mariage.client.meal.Meal;
 
 
 public class Main implements EntryPoint {
@@ -15,14 +18,14 @@ public class Main implements EntryPoint {
 		
 		Window.setMargin("0px");
 		
-		Login login = new Login();
+		//Person table handler
+		PersonTableHandler personTableHandler = new PersonTableHandler();
+		
+		Login login = new Login(personTableHandler);
 		login.login();
 		
 		VerticalPanel generalPanel = new VerticalPanel();
 		generalPanel.setWidth("100%");
-		
-		//Person table handler
-		PersonTableHandler personTableHandler = new PersonTableHandler();
 		
 		//General info part
 		VerticalPanel infoPanel = new VerticalPanel();

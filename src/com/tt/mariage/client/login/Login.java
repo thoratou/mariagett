@@ -18,12 +18,16 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.tt.mariage.client.data.PersonTableHandler;
 import com.tt.mariage.client.services.LoginInfo;
 import com.tt.mariage.client.services.LoginService;
 import com.tt.mariage.client.services.LoginServiceAsync;
 import com.tt.mariage.client.services.RegisterInfo;
 import com.tt.mariage.client.services.RegisterService;
 import com.tt.mariage.client.services.RegisterServiceAsync;
+import com.tt.mariage.client.services.RetrieveService;
+import com.tt.mariage.client.services.RetrieveServiceAsync;
+import com.tt.mariage.client.services.UserData;
 
 public class Login {
 	public interface ImageResources extends ClientBundle {	 
@@ -36,10 +40,16 @@ public class Login {
 	    ImageResource unitedKingdom();
 	}
 	
-	LoginServiceAsync loginService = GWT.create(LoginService.class);
-	RegisterServiceAsync registerService = GWT.create(RegisterService.class);
-	LoginConstants loginConstants = GWT.create(LoginConstants.class);
+	private LoginServiceAsync loginService = GWT.create(LoginService.class);
+	private RegisterServiceAsync registerService = GWT.create(RegisterService.class);
+	private RetrieveServiceAsync retrieveService = GWT.create(RetrieveService.class);
+	private LoginConstants loginConstants = GWT.create(LoginConstants.class);
+	private final PersonTableHandler personTableHandler;
 	
+	public Login(PersonTableHandler personTableHandler) {
+		this.personTableHandler = personTableHandler;
+	}
+
 	public void login(){
 		final DialogBox dialogBox = new DialogBox();
 		dialogBox.setText(loginConstants.headerText());
@@ -88,7 +98,7 @@ public class Login {
 	    
 	    Button loginButton = new Button(loginConstants.loginButton(), new ClickHandler() {
 	    	public void onClick(ClickEvent event) {
-	    		String user = userInput.getText();
+	    		final String user = userInput.getText();
 	    		String pwd = pwdInput.getText();
 	    		
 	    		loginService.login(user, pwd, new AsyncCallback<LoginInfo>() {
@@ -98,7 +108,24 @@ public class Login {
 	    			}
 	    			public void onSuccess(LoginInfo result) {
 	    				if(result.getStatus() == LoginInfo.Status.LoggedIn) {
-	    					dialogBox.hide();
+	    					
+	    					
+	    					//retrieve user data
+	    					retrieveService.retrieve(user, new AsyncCallback<UserData>() {
+
+								@Override
+								public void onFailure(Throwable caught) {
+				    				messageLabel.setHTML("<font color=red>retrieve data error</font>");
+				    			    loginLayout.getRowFormatter().setVisible(2, true);
+								}
+
+								@Override
+								public void onSuccess(UserData result) {
+									personTableHandler.fillFromUserData(result);
+			    					dialogBox.hide();									
+								}
+	    						
+	    					});
 	    				}
 	    				else if(result.getStatus() == LoginInfo.Status.MissingMail) {
 		    				messageLabel.setHTML("<font color=red>"+loginConstants.logginMissingMailMessage()+"</font>");

@@ -1,27 +1,28 @@
 package com.tt.mariage.client.data;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ListDataProvider;
+import com.tt.mariage.client.services.UserData;
 
 public class PersonTableHandler {
 	private final ListDataProvider<Person> dataProvider;
 	
 	public PersonTableHandler() {
 		dataProvider = new ListDataProvider<Person>();
-		
-		//tmp
-		Person toto = createNewPerson();
-		toto.setName("AAAA");
-		toto.setFirstname("BBBB");
-		toto.setInfant(false);
-
-		Person titi = createNewPerson();
-		titi.setName("CCCC");
-		titi.setFirstname("DDDD");
-		titi.setInfant(true);
-		
-		dataProvider.getList().add(toto);
-		dataProvider.getList().add(titi);
+	}
+	
+	public void fillFromUserData(UserData userData){
+		ArrayList<Person> personList = userData.getPersonList();
+		Iterator<Person> iterator = personList.iterator();
+		while (iterator.hasNext()) {
+			Person person = iterator.next();
+			person.setId(Person.nextId++);
+			dataProvider.getList().add(person);
+		}
+		refreshDisplays();
 	}
 	
 	public void addDataDisplay(HasData<Person> display) {

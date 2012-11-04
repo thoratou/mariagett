@@ -27,6 +27,9 @@
 		<copy todir='war'>
 			<fileset file="E:/Users/thoratou/workspace-mariage/MariageTT/src/com/tt/mariage/*.html"/>
 		</copy>	
+		<copy todir='war/WEB-INF'>
+			<fileset file="E:/Users/thoratou/workspace-mariage/MariageTT/src/com/tt/mariage/web.xml"/>
+				</copy>	
 		<copy todir='war/WEB-INF/lib'>
 			<fileset file="E:\eclipse\plugins\com.google.gwt.eclipse.sdkbundle_2.4.0.v201208080120-rel-r37\gwt-2.4.0\gwt-servlet.jar"/>
 			<fileset file="E:\eclipse\plugins\com.google.gwt.eclipse.sdkbundle_2.4.0.v201208080120-rel-r37\gwt-2.4.0\validation-api-1.0.0.GA-sources.jar"/>

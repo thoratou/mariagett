@@ -8,7 +8,7 @@ import com.tt.mariage.client.data.Person;
 
 public class PersonCellTable {
 	
-	protected interface GetValue<C> {
+	public interface GetValue<C> {
 		C getValue(Person contact);
 	}
 	
