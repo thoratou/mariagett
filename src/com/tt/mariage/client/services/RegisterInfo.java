@@ -1,14 +1,14 @@
 package com.tt.mariage.client.services;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class RegisterInfo implements Serializable {
+public class RegisterInfo implements IsSerializable {
 
-	private static final long serialVersionUID = 6063046451147717561L;
-
-	private boolean registered = false;
+	private boolean registered;
 	private String mail;
 	private String message;
+	
+	public RegisterInfo() {}
 
 	public boolean isRegistered() {
 		return registered;

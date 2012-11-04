@@ -4,6 +4,9 @@ import com.google.gwt.i18n.client.Constants;
 
 public interface LoginConstants extends Constants {
 	String headerText();
+	
+	String userMessageText();
+	
 	String mailText();
 	String passwordText();
 	String loginButton();

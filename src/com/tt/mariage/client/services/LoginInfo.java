@@ -1,11 +1,9 @@
 package com.tt.mariage.client.services;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class LoginInfo implements Serializable {
+public class LoginInfo implements IsSerializable {
 
-	private static final long serialVersionUID = 6063046451147717561L;
-	
 	public enum Status{
 		Undef,
 		LoggedIn,
@@ -16,16 +14,18 @@ public class LoginInfo implements Serializable {
 		InternalError
 	};
 
-	private Status status = Status.Undef;
+	private int status;
 	private String mail;
 	private String message;
+	
+	public LoginInfo() {}
 
 	public Status getStatus() {
-		return status;
+		return Status.values()[status];
 	}
 
 	public void setStatus(Status status) {
-		this.status = status;
+		this.status = status.ordinal();
 	}
 
 	public String getMail() {

@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -43,7 +44,7 @@ public class Login {
 	
 	public void login(){
 		final DialogBox dialogBox = new DialogBox();
-		dialogBox.setText("Login");
+		dialogBox.setText(loginConstants.headerText());
 	    dialogBox.setGlassEnabled(true);
 	    dialogBox.setAnimationEnabled(true);
 	    
@@ -52,6 +53,17 @@ public class Login {
 	    final TextBox userInput = new TextBox();
 	    final PasswordTextBox pwdInput = new PasswordTextBox();
 	    
+		final FlexTable userMessageLayout = new FlexTable();
+		{
+			userMessageLayout.setCellSpacing(6);
+		    FlexCellFormatter cellFormatter = userMessageLayout.getFlexCellFormatter();
+		    cellFormatter.setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_LEFT);
+		}
+		
+		HTML userMessageLabel = new HTML();
+		userMessageLabel.setHTML(loginConstants.userMessageText());
+		userMessageLayout.setWidget(0, 0, userMessageLabel);
+		
 		final FlexTable loginLayout = new FlexTable();
 		{
 		    loginLayout.setCellSpacing(6);
@@ -71,8 +83,8 @@ public class Login {
 	    //buttons
 		FlexTable buttonLayout = new FlexTable();
 		{
-		    loginLayout.setCellSpacing(6);
-		    FlexCellFormatter cellFormatter = loginLayout.getFlexCellFormatter();
+			buttonLayout.setCellSpacing(6);
+		    FlexCellFormatter cellFormatter = buttonLayout.getFlexCellFormatter();
 		    cellFormatter.setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_LEFT);
 		}
 	    
@@ -158,7 +170,7 @@ public class Login {
 		frImage.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				String url = "index_fr.html";
+				String url = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/index_fr.html";
 				if (!GWT.isProdMode()) {
 					url += "?gwt.codesvr=" + Window.Location.getParameter("gwt.codesvr");
 				}
@@ -171,7 +183,7 @@ public class Login {
 		ukImage.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				String url = "index.html";
+				String url = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/index.html";
 				if (!GWT.isProdMode()) {
 					url += "?gwt.codesvr=" + Window.Location.getParameter("gwt.codesvr");
 				}
@@ -182,6 +194,7 @@ public class Login {
 		langLayout.setWidget(0, 0, frImage);
 		langLayout.setWidget(0, 1, ukImage);
 		
+	    loginPanel.add(userMessageLayout);
 	    loginPanel.add(loginLayout);
 	    loginPanel.add(buttonLayout);
 	    loginPanel.add(new HTML("<br/>"));
