@@ -1,0 +1,10 @@
+#eclipse
+.classpath
+.project
+.settings
+
+#GWT
+.gwt
+*.jar
+war
+gwt-unitCache
