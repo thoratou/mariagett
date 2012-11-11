@@ -7,23 +7,30 @@ import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.tt.mariage.client.PersonCellTable;
-import com.tt.mariage.client.PersonCellTable.GetValue;
 import com.tt.mariage.client.data.Person;
 import com.tt.mariage.client.data.PersonChange;
 import com.tt.mariage.client.data.PersonTableHandler;
+import com.tt.mariage.client.data.UserDataHandler;
+import com.tt.mariage.client.services.SaveData;
+import com.tt.mariage.client.services.SaveData.Status;
+import com.tt.mariage.client.services.SaveService;
+import com.tt.mariage.client.services.SaveServiceAsync;
 
 public class Information extends PersonCellTable{
 
@@ -32,9 +39,16 @@ public class Information extends PersonCellTable{
 	private CellTable<Person> personCellTable;
 	
 	private PersonTableHandler personTableHandler;
+
+	private final UserDataHandler userDataHandler;
+	
+	private SaveServiceAsync saveService = GWT.create(SaveService.class);
+	
+    final HTML saveMessage = new HTML();
     
-	public Information(PersonTableHandler personTableHandler) {
-	    this.personTableHandler = personTableHandler;
+	public Information(UserDataHandler userDataHandler, PersonTableHandler personTableHandler) {
+	    this.userDataHandler = userDataHandler;
+		this.personTableHandler = personTableHandler;
 	    pendingChanges = new ArrayList<PersonChange<?>>();
 
 	    personCellTable = new CellTable<Person>(Person.KEY_PROVIDER);
@@ -48,6 +62,8 @@ public class Information extends PersonCellTable{
 		createFirstNameColumn();
 		createInfantColumn();
 		createRemoveColumn();
+		
+	    saveMessage.setVisible(false);
 		
 		HorizontalPanel buttonPanel = new HorizontalPanel();
 		createButtons(buttonPanel);
@@ -65,7 +81,8 @@ public class Information extends PersonCellTable{
 
 	    // Add some standard form options
 	    layout.setWidget(1, 0, personCellTable);
-	    layout.setWidget(2, 0, buttonPanel);
+	    layout.setWidget(2, 0, saveMessage);	    
+	    layout.setWidget(3, 0, buttonPanel);
 		
 		DecoratorPanel panel = new DecoratorPanel();
 		panel.setWidth("100%");
@@ -105,8 +122,30 @@ public class Information extends PersonCellTable{
 
 	    		// Push the changes to the views.
 	    		personTableHandler.refreshDisplays();
+	    		
+	    		personTableHandler.saveIntoUserData(userDataHandler.getUserData());
+	    		
+	    		saveService.save(userDataHandler.getUserData(), new AsyncCallback<SaveData>(){
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void onSuccess(SaveData result) {
+						if(result.getStatus() == Status.SaveOK) {
+
+						}else if(result.getStatus() == Status.InternalError || result.getStatus() == Status.Undef) {
+							saveMessage.setHTML(result.getMessage());
+							saveMessage.setVisible(true);
+	    				}
+					}
+				});
 	    	}
 	    });
+	    
 	    
 	    buttonPanel.add(addButton);
 	    buttonPanel.add(commitButton);

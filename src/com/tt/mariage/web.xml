@@ -40,5 +40,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     	<servlet-name>retrieveService</servlet-name>
     	<url-pattern>/mariagett/retrieve</url-pattern>
   	</servlet-mapping>
-  	
+
+    <servlet>
+		<servlet-name>saveService</servlet-name>
+		<servlet-class>com.tt.mariage.server.SaveServiceImpl</servlet-class>
+  	</servlet>
+
+  	<servlet-mapping>
+    	<servlet-name>saveService</servlet-name>
+    	<url-pattern>/mariagett/save</url-pattern>
+  	</servlet-mapping>
+  		
 </web-app>

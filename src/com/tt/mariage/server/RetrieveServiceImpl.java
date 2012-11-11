@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.tt.mariage.client.data.Person;
+import com.tt.mariage.client.services.RetrieveData;
+import com.tt.mariage.client.services.RetrieveData.Status;
 import com.tt.mariage.client.services.RetrieveService;
 import com.tt.mariage.client.services.UserData;
 
@@ -13,8 +15,14 @@ public class RetrieveServiceImpl extends RemoteServiceServlet implements
 	private static final long serialVersionUID = 405169472121812429L;
 
 	@Override
-	public UserData retrieve(String mail) {
+	public RetrieveData retrieve(String mail) {
+		RetrieveData retrieveData = new RetrieveData();
+		retrieveData.setStatus(Status.Undef);
+		retrieveData.setMessage("");
 		UserData userData = new UserData();
+		userData.setMail(mail);
+		retrieveData.setUserData(userData);
+		
 		userData.setPersonList(new ArrayList<Person>());
 		
 		Person toto = new Person();
@@ -29,7 +37,8 @@ public class RetrieveServiceImpl extends RemoteServiceServlet implements
 		
 		userData.getPersonList().add(toto);
 		userData.getPersonList().add(titi);
+		retrieveData.setStatus(Status.RetrieveOK);
 	    
-	    return userData;
+	    return retrieveData;
 	}
 }

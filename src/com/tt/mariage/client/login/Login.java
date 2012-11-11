@@ -19,15 +19,16 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.tt.mariage.client.data.PersonTableHandler;
+import com.tt.mariage.client.data.UserDataHandler;
 import com.tt.mariage.client.services.LoginInfo;
 import com.tt.mariage.client.services.LoginService;
 import com.tt.mariage.client.services.LoginServiceAsync;
 import com.tt.mariage.client.services.RegisterInfo;
 import com.tt.mariage.client.services.RegisterService;
 import com.tt.mariage.client.services.RegisterServiceAsync;
+import com.tt.mariage.client.services.RetrieveData;
 import com.tt.mariage.client.services.RetrieveService;
 import com.tt.mariage.client.services.RetrieveServiceAsync;
-import com.tt.mariage.client.services.UserData;
 
 public class Login {
 	public interface ImageResources extends ClientBundle {	 
@@ -45,8 +46,10 @@ public class Login {
 	private RetrieveServiceAsync retrieveService = GWT.create(RetrieveService.class);
 	private LoginConstants loginConstants = GWT.create(LoginConstants.class);
 	private final PersonTableHandler personTableHandler;
+	private final UserDataHandler userDataHandler;
 	
-	public Login(PersonTableHandler personTableHandler) {
+	public Login(UserDataHandler userDataHandler, PersonTableHandler personTableHandler) {
+		this.userDataHandler = userDataHandler;
 		this.personTableHandler = personTableHandler;
 	}
 
@@ -111,7 +114,7 @@ public class Login {
 	    					
 	    					
 	    					//retrieve user data
-	    					retrieveService.retrieve(user, new AsyncCallback<UserData>() {
+	    					retrieveService.retrieve(user, new AsyncCallback<RetrieveData>() {
 
 								@Override
 								public void onFailure(Throwable caught) {
@@ -120,9 +123,16 @@ public class Login {
 								}
 
 								@Override
-								public void onSuccess(UserData result) {
-									personTableHandler.fillFromUserData(result);
-			    					dialogBox.hide();									
+								public void onSuccess(RetrieveData result) {
+									if(result.getStatus() == RetrieveData.Status.RetrieveOK) {
+										userDataHandler.setUserData(result.getUserData());
+										personTableHandler.fillFromUserData(userDataHandler.getUserData());
+				    					dialogBox.hide();									
+									}
+				    				else if(result.getStatus() == RetrieveData.Status.InternalError || result.getStatus() == RetrieveData.Status.Undef) {
+					    				messageLabel.setHTML("<font color=red>"+loginConstants.generalFailureMessage()+"<br/>"+result.getMessage()+"</font>");
+					    			    loginLayout.getRowFormatter().setVisible(2, true);
+				    				}
 								}
 	    						
 	    					});
