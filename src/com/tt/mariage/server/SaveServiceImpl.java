@@ -31,6 +31,12 @@ public class SaveServiceImpl extends RemoteServiceServlet implements
 			string += "[" + person.getName() + " , " + person.getFirstname() + " , " + (person.isInfant() ? "true" : "false") + " , " + person.getMenu() + "]<br/>";
 		}
 		
+		string += "hotel booking : " + (userData.isWantHotelBooking() ? "true" : "false") + "<br/>";
+		string += "has car : " + (userData.isHasCar() ? "true" : "false") + "<br/>";
+		string += "free places : " + userData.getFreePlaces() + "<br/>";
+		string += "phone number : " + userData.getPhoneNumber() + "<br/>";
+		string += "other info : " + userData.getOtherInfo() + "<br/>";
+		
 		return string;
 	}
 }

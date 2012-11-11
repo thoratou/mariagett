@@ -37,6 +37,13 @@ public class RetrieveServiceImpl extends RemoteServiceServlet implements
 		
 		userData.getPersonList().add(toto);
 		userData.getPersonList().add(titi);
+		
+		userData.setWantHotelBooking(true);
+		userData.setHasCar(true);
+		userData.setFreePlaces("5");
+		userData.setPhoneNumber("0612345678");
+		userData.setOtherInfo("qibouyhbvouhdsfbvod");
+		
 		retrieveData.setStatus(Status.RetrieveOK);
 	    
 	    return retrieveData;

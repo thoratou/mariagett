@@ -127,6 +127,7 @@ public class Login {
 									if(result.getStatus() == RetrieveData.Status.RetrieveOK) {
 										userDataHandler.setUserData(result.getUserData());
 										personTableHandler.fillFromUserData(userDataHandler.getUserData());
+										userDataHandler.load();
 				    					dialogBox.hide();									
 									}
 				    				else if(result.getStatus() == RetrieveData.Status.InternalError || result.getStatus() == RetrieveData.Status.Undef) {

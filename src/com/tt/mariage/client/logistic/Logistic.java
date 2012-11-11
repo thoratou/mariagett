@@ -15,11 +15,13 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
+import com.tt.mariage.client.data.LoadHandler;
 import com.tt.mariage.client.data.UserDataHandler;
 import com.tt.mariage.client.services.SaveData;
 import com.tt.mariage.client.services.SaveData.Status;
 import com.tt.mariage.client.services.SaveService;
 import com.tt.mariage.client.services.SaveServiceAsync;
+import com.tt.mariage.client.services.UserData;
 
 public class Logistic {
 
@@ -30,6 +32,12 @@ public class Logistic {
     final HTML saveMessage = new HTML();
     
 	final FlexTable layout = new FlexTable();
+	
+	final RadioButton hotelYes = new RadioButton("Hotel", "Yes");
+	final RadioButton hotelNo = new RadioButton("Hotel", "No");
+	final RadioButton carYes = new RadioButton("Car", "Yes");
+	final RadioButton carNo = new RadioButton("Car", "No");
+	final TextBox carFreePlaceNumber = new TextBox();
 
 	public Logistic(UserDataHandler userDataHandler) {
 		this.userDataHandler = userDataHandler;
@@ -50,8 +58,6 @@ public class Logistic {
 		hotelQuestion.setText("Do you want a book in the hotel ?");
 
 		HorizontalPanel hotelLine =  new HorizontalPanel();
-		RadioButton hotelYes = new RadioButton("Hotel", "Yes");
-		RadioButton hotelNo = new RadioButton("Hotel", "No");
 		hotelNo.setValue(true);
 		hotelLine.add(hotelYes);
 		hotelLine.add(hotelNo);
@@ -63,8 +69,6 @@ public class Logistic {
 		carQuestion.setText("Do you have a car for the celebration ?");
 
 		HorizontalPanel carLine =  new HorizontalPanel();
-		RadioButton carYes = new RadioButton("Car", "Yes");
-		RadioButton carNo = new RadioButton("Car", "No");
 		carNo.setValue(true);
 		carLine.add(carYes);
 		carLine.add(carNo);
@@ -74,7 +78,6 @@ public class Logistic {
 				
 		Label carDetailsQuestion = new Label();
 		carDetailsQuestion.setText("If yes, how many free places do you have ?");
-		TextBox carFreePlaceNumber = new TextBox();
 
 		HorizontalPanel carDetails =  new HorizontalPanel();
 		carDetails.add(carFreePlaceNumber);
@@ -97,6 +100,23 @@ public class Logistic {
 		
 		///assembly logisticPanel
 		logisticPanel.add(panel);
+		
+		//add load handler to retrieve logistic data from server
+		userDataHandler.addLoadHandler(new LoadHandler() {
+			
+			@Override
+			public void load(UserData userData) {
+				boolean wantHotelBooking = userData.isWantHotelBooking();
+				hotelYes.setValue(wantHotelBooking);
+				hotelNo.setValue(!wantHotelBooking);
+				
+				boolean hasCar = userData.isHasCar();
+				carYes.setValue(hasCar);
+				carNo.setValue(!hasCar);
+				
+				carFreePlaceNumber.setValue(userData.getFreePlaces());
+			}
+		});
 	}
 	
 	private void createButtons(HorizontalPanel buttonPanel) {
@@ -106,7 +126,11 @@ public class Logistic {
 	    commitButton.addClickHandler(new ClickHandler() {
 	    	@Override
 	    	public void onClick(ClickEvent event) {
-	    		//TODO save info
+	    		
+	    		UserData userData = userDataHandler.getUserData();
+	    		userData.setWantHotelBooking(hotelYes.getValue().booleanValue());
+	    		userData.setHasCar(carYes.getValue().booleanValue());
+	    		userData.setFreePlaces(carFreePlaceNumber.getValue());
 	    		
 	    		saveService.save(userDataHandler.getUserData(), new AsyncCallback<SaveData>(){
 					
