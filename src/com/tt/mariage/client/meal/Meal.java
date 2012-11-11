@@ -14,8 +14,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
@@ -25,9 +25,9 @@ import com.tt.mariage.client.data.PersonChange;
 import com.tt.mariage.client.data.PersonTableHandler;
 import com.tt.mariage.client.data.UserDataHandler;
 import com.tt.mariage.client.services.SaveData;
+import com.tt.mariage.client.services.SaveData.Status;
 import com.tt.mariage.client.services.SaveService;
 import com.tt.mariage.client.services.SaveServiceAsync;
-import com.tt.mariage.client.services.SaveData.Status;
 
 public class Meal extends PersonCellTable{
 
@@ -40,6 +40,7 @@ public class Meal extends PersonCellTable{
 	private final UserDataHandler userDataHandler;
 	
 	private SaveServiceAsync saveService = GWT.create(SaveService.class);
+	private MealConstants mealConstants = GWT.create(MealConstants.class);
 	
     final HTML saveMessage = new HTML();
     
@@ -72,7 +73,7 @@ public class Meal extends PersonCellTable{
 
 	    // Add a title to the form
 	    //layout.setWidget(0, 0, headerLabel);
-	    layout.setHTML(0, 0, "<b>Meal</b>");
+	    layout.setHTML(0, 0, "<b>"+mealConstants.headerText()+"</b>");
 	    
 	    // Add some standard form options
 	    layout.setWidget(1, 0, personCellTable);
@@ -89,7 +90,7 @@ public class Meal extends PersonCellTable{
 	private void createButtons(HorizontalPanel buttonPanel) {
 	    //commit button
 	    Button commitButton = new Button();
-	    commitButton.setText("Save changes");
+	    commitButton.setText(mealConstants.saveButtonText());
 	    commitButton.addClickHandler(new ClickHandler() {
 	    	@Override
 	    	public void onClick(ClickEvent event) {
@@ -108,16 +109,17 @@ public class Meal extends PersonCellTable{
 					
 					@Override
 					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-						
+						saveMessage.setHTML("<font color=red>"+mealConstants.saveKOMessage()+"</font>");
+						saveMessage.setVisible(true);
 					}
 					
 					@Override
 					public void onSuccess(SaveData result) {
 						if(result.getStatus() == Status.SaveOK) {
-
+							saveMessage.setHTML("<font color=green>"+mealConstants.saveOKMessage()+"</font>");
+							saveMessage.setVisible(true);
 						}else if(result.getStatus() == Status.InternalError || result.getStatus() == Status.Undef) {
-							saveMessage.setHTML(result.getMessage());
+							saveMessage.setHTML("<font color=red>"+mealConstants.saveKOMessage()+"<br/>"+result.getMessage()+"</font>");
 							saveMessage.setVisible(true);
 	    				}
 					}
@@ -130,7 +132,7 @@ public class Meal extends PersonCellTable{
 
 	private void createNameColumn(){
 	    // name cell
-		addColumn(personCellTable, new TextCell(), "Name", new GetValue<String>() {
+		addColumn(personCellTable, new TextCell(), mealConstants.lastNameText(), new GetValue<String>() {
 			@Override
 			public String getValue(Person person) {
 				return person.getName();
@@ -140,7 +142,7 @@ public class Meal extends PersonCellTable{
 	
 	private void createFirstNameColumn(){
 	    // first name cell
-        addColumn(personCellTable, new TextCell(), "FirstName", new GetValue<String>() {
+        addColumn(personCellTable, new TextCell(), mealConstants.firstNameText(), new GetValue<String>() {
         	@Override
         	public String getValue(Person person) {
         		return person.getFirstname();
@@ -152,10 +154,10 @@ public class Meal extends PersonCellTable{
 		//meal choice cell
 		List<String> meals = new ArrayList<String>();
 		meals.add("");
-		meals.add("Fish menu");
-		meals.add("Meat menu");
-		meals.add("Children's menu");
-        addColumn(personCellTable, new SelectionCell(meals), "Meal", new GetValue<String>() {
+		meals.add(mealConstants.fishMenuText());
+		meals.add(mealConstants.meatMenuText());
+		meals.add(mealConstants.childMenuText());
+        addColumn(personCellTable, new SelectionCell(meals), mealConstants.mealText(), new GetValue<String>() {
         	@Override
         	public String getValue(Person person) {
         		return person.getMenu();

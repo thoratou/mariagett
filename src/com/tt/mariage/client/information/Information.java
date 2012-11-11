@@ -43,6 +43,8 @@ public class Information extends PersonCellTable{
 	private final UserDataHandler userDataHandler;
 	
 	private SaveServiceAsync saveService = GWT.create(SaveService.class);
+	private InformationConstants informationConstants = GWT.create(InformationConstants.class);
+
 	
     final HTML saveMessage = new HTML();
     
@@ -76,13 +78,13 @@ public class Information extends PersonCellTable{
 	    cellFormatter.setColSpan(0, 0, 2);
 
 	    // Add a title to the form
-	    //layout.setWidget(0, 0, headerLabel);
-	    layout.setHTML(0, 0, "<b>General Information</b>");
+	    layout.setHTML(0, 0, "<b>"+informationConstants.headerText()+"</b>");
+	    layout.setHTML(1, 0, informationConstants.userMessageText());
 
 	    // Add some standard form options
-	    layout.setWidget(1, 0, personCellTable);
-	    layout.setWidget(2, 0, saveMessage);	    
-	    layout.setWidget(3, 0, buttonPanel);
+	    layout.setWidget(2, 0, personCellTable);
+	    layout.setWidget(3, 0, saveMessage);	    
+	    layout.setWidget(4, 0, buttonPanel);
 		
 		DecoratorPanel panel = new DecoratorPanel();
 		panel.setWidth("100%");
@@ -99,7 +101,7 @@ public class Information extends PersonCellTable{
 	private void createButtons(HorizontalPanel buttonPanel) {
 	    //add button
 	    Button addButton = new Button();
-	    addButton.setText("Add");
+	    addButton.setText(informationConstants.addButtonText());
 	    addButton.addClickHandler(new ClickHandler() {
 	    	@Override
 	    	public void onClick(ClickEvent event) {
@@ -110,7 +112,7 @@ public class Information extends PersonCellTable{
 	    
 	    //commit button
 	    Button commitButton = new Button();
-	    commitButton.setText("Save changes");
+	    commitButton.setText(informationConstants.saveButtonText());
 	    commitButton.addClickHandler(new ClickHandler() {
 	    	@Override
 	    	public void onClick(ClickEvent event) {
@@ -129,16 +131,17 @@ public class Information extends PersonCellTable{
 					
 					@Override
 					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-						
+						saveMessage.setHTML("<font color=red>"+informationConstants.saveKOMessage()+"</font>");
+						saveMessage.setVisible(true);
 					}
 					
 					@Override
 					public void onSuccess(SaveData result) {
 						if(result.getStatus() == Status.SaveOK) {
-
+							saveMessage.setHTML("<font color=green>"+informationConstants.saveOKMessage()+"</font>");
+							saveMessage.setVisible(true);
 						}else if(result.getStatus() == Status.InternalError || result.getStatus() == Status.Undef) {
-							saveMessage.setHTML(result.getMessage());
+							saveMessage.setHTML("<font color=red>"+informationConstants.saveKOMessage()+"<br/>"+result.getMessage()+"</font>");
 							saveMessage.setVisible(true);
 	    				}
 					}
@@ -153,7 +156,7 @@ public class Information extends PersonCellTable{
 
 	private void createNameColumn(){
 	    // name cell
-		addColumn(personCellTable, new EditTextCell(), "Name", new GetValue<String>() {
+		addColumn(personCellTable, new EditTextCell(), informationConstants.lastNameText(), new GetValue<String>() {
 			@Override
 			public String getValue(Person person) {
 				return person.getName();
@@ -168,7 +171,7 @@ public class Information extends PersonCellTable{
 	
 	private void createFirstNameColumn(){
 	    // first name cell
-        addColumn(personCellTable, new EditTextCell(), "FirstName", new GetValue<String>() {
+        addColumn(personCellTable, new EditTextCell(), informationConstants.firstNameText(), new GetValue<String>() {
         	@Override
         	public String getValue(Person person) {
         		return person.getFirstname();
@@ -183,7 +186,7 @@ public class Information extends PersonCellTable{
 	
 	private void createInfantColumn() {
 		// is infant checkbox cell
-        addColumn(personCellTable, new CheckboxCell(), "Infant", new GetValue<Boolean>() {
+        addColumn(personCellTable, new CheckboxCell(), informationConstants.childText(), new GetValue<Boolean>() {
         	@Override
         	public Boolean getValue(Person person) {
         		return new Boolean(person.isInfant());
@@ -207,10 +210,10 @@ public class Information extends PersonCellTable{
                 }
                 sb.appendHtmlConstant("</button>");
         	}
-        }, "Remove", new GetValue<String>() {
+        }, informationConstants.removeText(), new GetValue<String>() {
         	@Override
         	public String getValue(Person person) {
-        		return "Remove";
+        		return informationConstants.removeText();
         	}
         }, new FieldUpdater<Person, String>() {
         	@Override

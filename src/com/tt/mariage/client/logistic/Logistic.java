@@ -136,8 +136,8 @@ public class Logistic {
 					
 					@Override
 					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-						
+						saveMessage.setHTML("<font color=red>save data error</font>");
+					    layout.getRowFormatter().setVisible(4, true);
 					}
 					
 					@Override
