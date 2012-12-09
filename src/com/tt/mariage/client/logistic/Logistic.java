@@ -1,5 +1,7 @@
 package com.tt.mariage.client.logistic;
 
+import java.util.Date;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -14,6 +16,7 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RadioButton;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.tt.mariage.client.data.LoadHandler;
@@ -37,9 +40,14 @@ public class Logistic {
 	
 	final RadioButton hotelYes = new RadioButton("Hotel", logisticConstants.yesText());
 	final RadioButton hotelNo = new RadioButton("Hotel", logisticConstants.noText());
+    final DateBox arrivalDateBox = new DateBox();
+    final DateBox departureDateBox = new DateBox();
+
 	final RadioButton carYes = new RadioButton("Car", logisticConstants.yesText());
 	final RadioButton carNo = new RadioButton("Car", logisticConstants.noText());
 	final TextBox carFreePlaceNumber = new TextBox();
+	
+	final TextArea textArea = new TextArea();
 
 	public Logistic(UserDataHandler userDataHandler) {
 		this.userDataHandler = userDataHandler;
@@ -74,14 +82,12 @@ public class Logistic {
 	    /// Arrival DateBox
 	    @SuppressWarnings("deprecation")
 		DateTimeFormat dateFormat = DateTimeFormat.getMediumDateFormat();
-	    DateBox arrivalDateBox = new DateBox();
 	    arrivalDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
 
 		layout.setWidget(3, 0, new HTML(logisticConstants.arrivalDateText()));	
 	    layout.setWidget(3, 1, arrivalDateBox);	
 
 	    /// Departure DateBox
-	    DateBox departureDateBox = new DateBox();
 	    departureDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
 	    
 		layout.setWidget(4, 0, new HTML(logisticConstants.departureDateText()));	
@@ -109,14 +115,25 @@ public class Logistic {
 		layout.setWidget(7, 0, carDetailsQuestion);	
 	    layout.setWidget(7, 1, carDetails);	
 	    
-	    layout.setWidget(8, 0, saveMessage);
+	    /// Other
+
+	    layout.setWidget(8, 0, new HTML(logisticConstants.otherInfo()));
 	    layout.getFlexCellFormatter().setColSpan(8, 0, 2);
-	    layout.getRowFormatter().setVisible(8, false);
+	    
+	    textArea.setVisibleLines(8);
+	    textArea.setWidth("95%");
+	    layout.setWidget(9, 0, textArea);
+	    layout.getFlexCellFormatter().setColSpan(9, 0, 2);
+	    
+	    /// Save
+	    layout.setWidget(10, 0, saveMessage);
+	    layout.getFlexCellFormatter().setColSpan(10, 0, 2);
+	    saveMessage.setVisible(false);
 	    
 		HorizontalPanel buttonPanel = new HorizontalPanel();
 		createButtons(buttonPanel);
-	    layout.setWidget(9, 0, buttonPanel);
-	    layout.getFlexCellFormatter().setColSpan(9, 0, 2);
+	    layout.setWidget(10, 0, buttonPanel);
+	    layout.getFlexCellFormatter().setColSpan(10, 0, 2);
 	    
 		DecoratorPanel panel = new DecoratorPanel();
 		panel.setWidth("100%");
@@ -134,11 +151,31 @@ public class Logistic {
 				hotelYes.setValue(wantHotelBooking);
 				hotelNo.setValue(!wantHotelBooking);
 				
+	    		@SuppressWarnings("deprecation")
+	    		DateTimeFormat dateFormat = DateTimeFormat.getMediumDateFormat();
+				
+	    		String arrivalString = userData.getArrivalDate();
+	    		if(arrivalString != null && !"".equals(arrivalString)){
+	    			Date arrivalDate = dateFormat.parse(arrivalString);
+	    			if(arrivalDate != null){
+						arrivalDateBox.setValue(arrivalDate);	    				
+	    			}
+	    		}
+	    		
+	    		String departureString = userData.getDepartureDate();
+	    		if(departureString != null && !"".equals(departureString)){
+	    			Date departureDate = dateFormat.parse(departureString);
+	    			if(departureDate != null){
+	    				departureDateBox.setValue(departureDate);	    				
+	    			}
+	    		}
+				
 				boolean hasCar = userData.isHasCar();
 				carYes.setValue(hasCar);
 				carNo.setValue(!hasCar);
 				
 				carFreePlaceNumber.setValue(userData.getFreePlaces());
+				textArea.setValue(userData.getOtherInfo());
 			}
 		});
 	}
@@ -152,16 +189,39 @@ public class Logistic {
 	    	public void onClick(ClickEvent event) {
 	    		
 	    		UserData userData = userDataHandler.getUserData();
+
 	    		userData.setWantHotelBooking(hotelYes.getValue().booleanValue());
+
+	    		@SuppressWarnings("deprecation")
+	    		DateTimeFormat dateFormat = DateTimeFormat.getMediumDateFormat();
+
+	    		Date arrivalDate = arrivalDateBox.getValue();
+	    		if(arrivalDate != null){
+		    		String arrivalString = dateFormat.format(arrivalDate);
+		    		if(arrivalString != null && !"".equals(arrivalDate)){
+		    			userData.setArrivalDate(arrivalString);	    	
+		    		}
+	    		}
+	    		
+	    		Date departureDate = departureDateBox.getValue();
+	    		if(departureDate != null){
+		    		String departureString = dateFormat.format(departureDate);
+		    		if(departureString != null && !"".equals(departureDate)){
+		    			userData.setDepartureDate(departureString);
+		    		}
+	    		}
+	    		
 	    		userData.setHasCar(carYes.getValue().booleanValue());
 	    		userData.setFreePlaces(carFreePlaceNumber.getValue());
+	    		
+	    		userData.setOtherInfo(textArea.getValue());
 	    		
 	    		saveService.save(userDataHandler.getUserData(), new AsyncCallback<SaveData>(){
 					
 					@Override
 					public void onFailure(Throwable caught) {
 						saveMessage.setHTML("<font color=red>"+logisticConstants.saveKOMessage()+"</font>");
-					    layout.getRowFormatter().setVisible(4, true);
+						saveMessage.setVisible(true);
 					}
 					
 					@Override

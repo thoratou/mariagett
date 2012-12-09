@@ -1,6 +1,7 @@
 package com.tt.mariage.server;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.tt.mariage.client.data.Person;
@@ -39,6 +40,8 @@ public class RetrieveServiceImpl extends RemoteServiceServlet implements
 		userData.getPersonList().add(titi);
 		
 		userData.setWantHotelBooking(true);
+		userData.setArrivalDate("");
+		userData.setDepartureDate("");
 		userData.setHasCar(true);
 		userData.setFreePlaces("5");
 		userData.setPhoneNumber("0612345678");

@@ -15,6 +15,7 @@ public interface LogisticConstants extends Constants {
 	String carQuestion();
 	String freePlacesQuestion();
 	String phoneNumberQuestion();
+	String otherInfo();
 
 	String yesText();
 	String noText();
@@ -23,5 +24,4 @@ public interface LogisticConstants extends Constants {
 		
 	String saveOKMessage();
 	String saveKOMessage();
-	
 }
