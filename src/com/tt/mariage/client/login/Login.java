@@ -210,7 +210,7 @@ public class Login {
 		frImage.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				String url = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/index_fr.html";
+				String url = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/index.html";
 				if (!GWT.isProdMode()) {
 					url += "?gwt.codesvr=" + Window.Location.getParameter("gwt.codesvr");
 				}
@@ -223,7 +223,7 @@ public class Login {
 		ukImage.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				String url = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/index.html";
+				String url = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/index_en.html";
 				if (!GWT.isProdMode()) {
 					url += "?gwt.codesvr=" + Window.Location.getParameter("gwt.codesvr");
 				}

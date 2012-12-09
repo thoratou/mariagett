@@ -38,6 +38,7 @@
 			<fileset file="E:\Users\thoratou\workspace-mariage\MariageTT\mailapi.jar"/>
 			<fileset file="E:\Users\thoratou\workspace-mariage\MariageTT\smtp.jar"/>
 			<fileset file="E:\Users\thoratou\workspace-mariage\MariageTT\sqlite-jdbc-3.7.2.jar"/>
+			<fileset file="E:\Users\thoratou\workspace-mariage\MariageTT\protobuf-java-2.4.1.jar"/>
 		</copy>		
 	</target>
 
@@ -54,6 +55,7 @@
 				<pathelement location="E:/Users/thoratou/workspace-mariage/MariageTT/mailapi.jar" />
 				<pathelement location="E:/Users/thoratou/workspace-mariage/MariageTT/smtp.jar" />
 				<pathelement location="E:/Users/thoratou/workspace-mariage/MariageTT/sqlite-jdbc-3.7.2.jar" />
+				<pathelement location="E:/Users/thoratou/workspace-mariage/MariageTT/protobuf-java-2.4.1.jar" />
 			</classpath>
 			<arg value="-style"/>
 			<arg value="OBFUSCATED"/>

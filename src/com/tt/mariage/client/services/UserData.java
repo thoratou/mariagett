@@ -1,7 +1,6 @@
 package com.tt.mariage.client.services;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.tt.mariage.client.data.Person;
