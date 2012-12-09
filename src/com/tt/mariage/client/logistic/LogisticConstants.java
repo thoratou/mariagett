@@ -8,6 +8,10 @@ public interface LogisticConstants extends Constants {
 	String userMessageText();
 	
 	String hotelQuestion();
+	String dateQuestion();
+	String arrivalDateText();
+	String departureDateText();
+	
 	String carQuestion();
 	String freePlacesQuestion();
 	String phoneNumberQuestion();

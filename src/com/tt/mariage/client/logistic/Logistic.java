@@ -3,6 +3,7 @@ package com.tt.mariage.client.logistic;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratorPanel;
@@ -14,6 +15,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.datepicker.client.DateBox;
 import com.tt.mariage.client.data.LoadHandler;
 import com.tt.mariage.client.data.UserDataHandler;
 import com.tt.mariage.client.services.SaveData;
@@ -52,7 +54,7 @@ public class Logistic {
 		
 	    /// Title
 	    layout.setHTML(0, 0, "<b>"+logisticConstants.headerText()+"</b>");
-
+	    
 		/// Hotel line
 		HTML hotelQuestion = new HTML(logisticConstants.hotelQuestion());
 
@@ -63,7 +65,32 @@ public class Logistic {
 	    
 		layout.setWidget(1, 0, hotelQuestion);
 	    layout.setWidget(1, 1, hotelLine);
+	    
+	    ///Date question
+	    HTML dateQuestion = new HTML(logisticConstants.dateQuestion());
+	    layout.setWidget(2, 0, dateQuestion);
+	    layout.getFlexCellFormatter().setColSpan(2, 0, 2);
 		
+	    /// Arrival DateBox
+	    @SuppressWarnings("deprecation")
+		DateTimeFormat dateFormat = DateTimeFormat.getMediumDateFormat();
+	    DateBox arrivalDateBox = new DateBox();
+	    arrivalDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
+
+		layout.setWidget(3, 0, new HTML(logisticConstants.arrivalDateText()));	
+	    layout.setWidget(3, 1, arrivalDateBox);	
+
+	    /// Departure DateBox
+	    DateBox departureDateBox = new DateBox();
+	    departureDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
+	    
+		layout.setWidget(4, 0, new HTML(logisticConstants.departureDateText()));	
+	    layout.setWidget(4, 1, departureDateBox);
+	    
+	    ///br
+	    layout.setWidget(5, 0, new HTML("<br/><br/>"));
+	    
+	    /// Car line
 	    HTML carQuestion = new HTML(logisticConstants.carQuestion());
 
 		HorizontalPanel carLine =  new HorizontalPanel();
@@ -71,25 +98,25 @@ public class Logistic {
 		carLine.add(carYes);
 		carLine.add(carNo);
 	    
-		layout.setWidget(2, 0, carQuestion);
-	    layout.setWidget(2, 1, carLine);
+		layout.setWidget(6, 0, carQuestion);
+	    layout.setWidget(6, 1, carLine);
 				
 	    HTML carDetailsQuestion = new HTML(logisticConstants.freePlacesQuestion());
 
 		HorizontalPanel carDetails =  new HorizontalPanel();
 		carDetails.add(carFreePlaceNumber);
 
-		layout.setWidget(3, 0, carDetailsQuestion);	
-	    layout.setWidget(3, 1, carDetails);	
+		layout.setWidget(7, 0, carDetailsQuestion);	
+	    layout.setWidget(7, 1, carDetails);	
 	    
-	    layout.setWidget(4, 0, saveMessage);
-	    layout.getFlexCellFormatter().setColSpan(4, 0, 2);
-	    layout.getRowFormatter().setVisible(4, false);
+	    layout.setWidget(8, 0, saveMessage);
+	    layout.getFlexCellFormatter().setColSpan(8, 0, 2);
+	    layout.getRowFormatter().setVisible(8, false);
 	    
 		HorizontalPanel buttonPanel = new HorizontalPanel();
 		createButtons(buttonPanel);
-	    layout.setWidget(5, 0, buttonPanel);
-	    layout.getFlexCellFormatter().setColSpan(5, 0, 2);
+	    layout.setWidget(9, 0, buttonPanel);
+	    layout.getFlexCellFormatter().setColSpan(9, 0, 2);
 	    
 		DecoratorPanel panel = new DecoratorPanel();
 		panel.setWidth("100%");
