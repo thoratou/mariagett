@@ -11,7 +11,6 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
@@ -28,15 +27,16 @@ public class Logistic {
 	private final UserDataHandler userDataHandler;
 	
 	private SaveServiceAsync saveService = GWT.create(SaveService.class);
+	private LogisticConstants logisticConstants = GWT.create(LogisticConstants.class);
 	
     final HTML saveMessage = new HTML();
     
 	final FlexTable layout = new FlexTable();
 	
-	final RadioButton hotelYes = new RadioButton("Hotel", "Yes");
-	final RadioButton hotelNo = new RadioButton("Hotel", "No");
-	final RadioButton carYes = new RadioButton("Car", "Yes");
-	final RadioButton carNo = new RadioButton("Car", "No");
+	final RadioButton hotelYes = new RadioButton("Hotel", logisticConstants.yesText());
+	final RadioButton hotelNo = new RadioButton("Hotel", logisticConstants.noText());
+	final RadioButton carYes = new RadioButton("Car", logisticConstants.yesText());
+	final RadioButton carNo = new RadioButton("Car", logisticConstants.noText());
 	final TextBox carFreePlaceNumber = new TextBox();
 
 	public Logistic(UserDataHandler userDataHandler) {
@@ -51,11 +51,10 @@ public class Logistic {
 	    cellFormatter.setColSpan(0, 0, 2);
 		
 	    /// Title
-	    layout.setHTML(0, 0, "<b>Logistics</b>");
+	    layout.setHTML(0, 0, "<b>"+logisticConstants.headerText()+"</b>");
 
 		/// Hotel line
-		Label hotelQuestion = new Label();
-		hotelQuestion.setText("Do you want a book in the hotel ?");
+		HTML hotelQuestion = new HTML(logisticConstants.hotelQuestion());
 
 		HorizontalPanel hotelLine =  new HorizontalPanel();
 		hotelNo.setValue(true);
@@ -65,8 +64,7 @@ public class Logistic {
 		layout.setWidget(1, 0, hotelQuestion);
 	    layout.setWidget(1, 1, hotelLine);
 		
-		Label carQuestion = new Label();
-		carQuestion.setText("Do you have a car for the celebration ?");
+	    HTML carQuestion = new HTML(logisticConstants.carQuestion());
 
 		HorizontalPanel carLine =  new HorizontalPanel();
 		carNo.setValue(true);
@@ -76,8 +74,7 @@ public class Logistic {
 		layout.setWidget(2, 0, carQuestion);
 	    layout.setWidget(2, 1, carLine);
 				
-		Label carDetailsQuestion = new Label();
-		carDetailsQuestion.setText("If yes, how many free places do you have ?");
+	    HTML carDetailsQuestion = new HTML(logisticConstants.freePlacesQuestion());
 
 		HorizontalPanel carDetails =  new HorizontalPanel();
 		carDetails.add(carFreePlaceNumber);
@@ -122,7 +119,7 @@ public class Logistic {
 	private void createButtons(HorizontalPanel buttonPanel) {
 	    //commit button
 	    Button commitButton = new Button();
-	    commitButton.setText("Save changes");
+	    commitButton.setText(logisticConstants.saveButtonText());
 	    commitButton.addClickHandler(new ClickHandler() {
 	    	@Override
 	    	public void onClick(ClickEvent event) {
@@ -136,17 +133,18 @@ public class Logistic {
 					
 					@Override
 					public void onFailure(Throwable caught) {
-						saveMessage.setHTML("<font color=red>save data error</font>");
+						saveMessage.setHTML("<font color=red>"+logisticConstants.saveKOMessage()+"</font>");
 					    layout.getRowFormatter().setVisible(4, true);
 					}
 					
 					@Override
 					public void onSuccess(SaveData result) {
 						if(result.getStatus() == Status.SaveOK) {
-
+							saveMessage.setHTML("<font color=green>"+logisticConstants.saveOKMessage()+"</font>");
+							saveMessage.setVisible(true);
 						}else if(result.getStatus() == Status.InternalError || result.getStatus() == Status.Undef) {
-							saveMessage.setHTML(result.getMessage());
-						    layout.getRowFormatter().setVisible(4, true);
+							saveMessage.setHTML("<font color=red>"+logisticConstants.saveKOMessage()+"<br/>"+result.getMessage()+"</font>");
+							saveMessage.setVisible(true);
 	    				}
 					}
 				});
