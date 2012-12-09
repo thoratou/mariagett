@@ -73,7 +73,7 @@ public class Meal extends PersonCellTable{
 
 	    // Add a title to the form
 	    //layout.setWidget(0, 0, headerLabel);
-	    layout.setHTML(0, 0, "<b>"+mealConstants.headerText()+"</b>");
+	    layout.setHTML(0, 0, "<b>"+mealConstants.headerText()+"</b><hr>");
 	    
 	    // Add some standard form options
 	    layout.setWidget(1, 0, personCellTable);

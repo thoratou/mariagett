@@ -61,7 +61,8 @@ public class Logistic {
 	    cellFormatter.setColSpan(0, 0, 2);
 		
 	    /// Title
-	    layout.setHTML(0, 0, "<b>"+logisticConstants.headerText()+"</b>");
+	    layout.setHTML(0, 0, "<b>"+logisticConstants.headerText()+"</b><hr>");
+	    layout.getFlexCellFormatter().setColSpan(0, 0, 2);
 	    
 		/// Hotel line
 		HTML hotelQuestion = new HTML(logisticConstants.hotelQuestion());
@@ -94,7 +95,8 @@ public class Logistic {
 	    layout.setWidget(4, 1, departureDateBox);
 	    
 	    ///br
-	    layout.setWidget(5, 0, new HTML("<br/><br/>"));
+	    layout.setWidget(5, 0, new HTML("<br/><hr><br/>"));
+	    layout.getFlexCellFormatter().setColSpan(5, 0, 2);
 	    
 	    /// Car line
 	    HTML carQuestion = new HTML(logisticConstants.carQuestion());
@@ -115,25 +117,29 @@ public class Logistic {
 		layout.setWidget(7, 0, carDetailsQuestion);	
 	    layout.setWidget(7, 1, carDetails);	
 	    
+	    ///br
+	    layout.setWidget(8, 0, new HTML("<br/><hr><br/>"));
+	    layout.getFlexCellFormatter().setColSpan(8, 0, 2);
+	    
 	    /// Other
 
-	    layout.setWidget(8, 0, new HTML(logisticConstants.otherInfo()));
-	    layout.getFlexCellFormatter().setColSpan(8, 0, 2);
+	    layout.setWidget(9, 0, new HTML(logisticConstants.otherInfo()));
+	    layout.getFlexCellFormatter().setColSpan(9, 0, 2);
 	    
 	    textArea.setVisibleLines(8);
 	    textArea.setWidth("95%");
-	    layout.setWidget(9, 0, textArea);
-	    layout.getFlexCellFormatter().setColSpan(9, 0, 2);
+	    layout.setWidget(10, 0, textArea);
+	    layout.getFlexCellFormatter().setColSpan(10, 0, 2);
 	    
 	    /// Save
-	    layout.setWidget(10, 0, saveMessage);
-	    layout.getFlexCellFormatter().setColSpan(10, 0, 2);
+	    layout.setWidget(11, 0, saveMessage);
+	    layout.getFlexCellFormatter().setColSpan(11, 0, 2);
 	    saveMessage.setVisible(false);
 	    
 		HorizontalPanel buttonPanel = new HorizontalPanel();
 		createButtons(buttonPanel);
-	    layout.setWidget(10, 0, buttonPanel);
-	    layout.getFlexCellFormatter().setColSpan(10, 0, 2);
+	    layout.setWidget(12, 0, buttonPanel);
+	    layout.getFlexCellFormatter().setColSpan(12, 0, 2);
 	    
 		DecoratorPanel panel = new DecoratorPanel();
 		panel.setWidth("100%");
