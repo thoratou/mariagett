@@ -3,7 +3,6 @@ package com.tt.mariage.server;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -56,7 +55,6 @@ public class SaveServiceImpl extends RemoteServiceServlet implements
 			FileOutputStream output = new FileOutputStream(dataFile);
 			newBuilder.build().writeTo(output);
 			output.close();
-			saveData.setStatus(Status.SaveOK);
 		} catch (FileNotFoundException e) {
 	    	saveData.setStatus(Status.InternalError);
 	    	saveData.setMessage(commonService.convertException(e));
@@ -94,6 +92,7 @@ public class SaveServiceImpl extends RemoteServiceServlet implements
 		        updateStatement.setString(1, dataFile);
 		        updateStatement.executeUpdate();
 		        updateStatement.close();
+		        saveData.setStatus(Status.SaveOK);
 			}
 			else{
 				saveData.setStatus(Status.InternalError);
