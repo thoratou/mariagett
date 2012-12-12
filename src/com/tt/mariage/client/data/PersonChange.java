@@ -1,5 +1,9 @@
 package com.tt.mariage.client.data;
 
+import java.util.List;
+
+import com.tt.mariage.client.data.Person.Menu;
+
 public abstract class PersonChange<T> {
     private final Person person;
     private final T value;
@@ -42,11 +46,12 @@ public abstract class PersonChange<T> {
 		};
 	}
 	
-	public static PersonChange<String> createMenuCommiter(Person person, String menu) {
+	public static PersonChange<String> createMenuCommiter(Person person, String menu, final List<String> menuList) {
 		return new PersonChange<String>(person, menu) {
 			@Override
-			protected void doCommit(Person person, String menu) {
-				person.setMenu(menu);
+			protected void doCommit(Person person, String value) {
+        		int menu = menuList.indexOf(value);
+				person.setMenu(Menu.values()[menu]);
 			}
 		};
 	}

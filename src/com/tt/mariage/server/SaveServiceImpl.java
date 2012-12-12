@@ -21,6 +21,7 @@ import com.tt.mariage.client.services.SaveService;
 import com.tt.mariage.client.services.UserData;
 import com.tt.mariage.server.proto.UserDataProtos;
 import com.tt.mariage.server.proto.UserDataProtos.Blob.Builder;
+import com.tt.mariage.server.proto.UserDataProtos.Blob.MenuType;
 
 public class SaveServiceImpl extends RemoteServiceServlet implements
     SaveService {
@@ -134,16 +135,18 @@ public class SaveServiceImpl extends RemoteServiceServlet implements
 			builder.setLastName(person.getName());
 			builder.setFirstName(person.getFirstname());
 			builder.setIsInfant(person.isInfant());
-			if(person.getMenu() != null)
-				builder.setMenu(person.getMenu());
+			builder.setMenu(MenuType.values()[person.getMenu().ordinal()]);
 			newBuilder.addPerson(builder);
 		}
 		
 		newBuilder.setIsBookHotel(userData.isWantHotelBooking());
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMdd");
+		
 		if(userData.getArrivalDate() != null && !"".equals(userData.getArrivalDate()))
-			newBuilder.setArrivalDate(userData.getArrivalDate());
+			newBuilder.setArrivalDate(dateFormat.format(userData.getArrivalDate()));
 		if(userData.getDepartureDate() != null && !"".equals(userData.getDepartureDate()))
-			newBuilder.setDepartureDate(userData.getDepartureDate());
+			newBuilder.setDepartureDate(dateFormat.format(userData.getDepartureDate()));
 		
 		newBuilder.setHasCar(userData.isHasCar());
 		if(userData.getFreePlaces() != null && !"".equals(userData.getFreePlaces()))

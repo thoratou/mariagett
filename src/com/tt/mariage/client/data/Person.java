@@ -12,11 +12,18 @@ public class Person implements IsSerializable{
 		}
 	};
 	
+	public enum Menu{
+		NoMenu,
+		FishMenu,
+		MeatMenu,
+		ChildMenu
+	};
+	
 	private int id;
 	private String name;
 	private String firstname;
 	private boolean isInfant;
-	private String menu;
+	private int menu;
 	
 	public Person() {
 		this.id = -1;
@@ -65,12 +72,12 @@ public class Person implements IsSerializable{
 		this.isInfant = isInfant;
 	}
 	
-	public String getMenu() {
-		return menu;
+	public Menu getMenu() {
+		return Menu.values()[menu];
 	}
 
-	public void setMenu(String menu) {
-		this.menu = menu;
+	public void setMenu(Menu menu) {
+		this.menu = menu.ordinal();
 	}
 
     @Override

@@ -157,23 +157,14 @@ public class Logistic {
 				hotelYes.setValue(wantHotelBooking);
 				hotelNo.setValue(!wantHotelBooking);
 				
-	    		@SuppressWarnings("deprecation")
-	    		DateTimeFormat dateFormat = DateTimeFormat.getMediumDateFormat();
-				
-	    		String arrivalString = userData.getArrivalDate();
-	    		if(arrivalString != null && !"".equals(arrivalString)){
-	    			Date arrivalDate = dateFormat.parse(arrivalString);
-	    			if(arrivalDate != null){
-						arrivalDateBox.setValue(arrivalDate);	    				
-	    			}
+				Date arrivalDate = userData.getArrivalDate();
+	    		if(arrivalDate != null){
+					arrivalDateBox.setValue(arrivalDate);	    				
 	    		}
 	    		
-	    		String departureString = userData.getDepartureDate();
-	    		if(departureString != null && !"".equals(departureString)){
-	    			Date departureDate = dateFormat.parse(departureString);
-	    			if(departureDate != null){
-	    				departureDateBox.setValue(departureDate);	    				
-	    			}
+				Date departureDate = userData.getDepartureDate();
+	    		if(departureDate != null){
+	    			departureDateBox.setValue(departureDate);	    				
 	    		}
 				
 				boolean hasCar = userData.isHasCar();
@@ -198,23 +189,14 @@ public class Logistic {
 
 	    		userData.setWantHotelBooking(hotelYes.getValue().booleanValue());
 
-	    		@SuppressWarnings("deprecation")
-	    		DateTimeFormat dateFormat = DateTimeFormat.getMediumDateFormat();
-
 	    		Date arrivalDate = arrivalDateBox.getValue();
 	    		if(arrivalDate != null){
-		    		String arrivalString = dateFormat.format(arrivalDate);
-		    		if(arrivalString != null && !"".equals(arrivalDate)){
-		    			userData.setArrivalDate(arrivalString);	    	
-		    		}
+		    		userData.setArrivalDate(arrivalDate);	    	
 	    		}
 	    		
 	    		Date departureDate = departureDateBox.getValue();
 	    		if(departureDate != null){
-		    		String departureString = dateFormat.format(departureDate);
-		    		if(departureString != null && !"".equals(departureDate)){
-		    			userData.setDepartureDate(departureString);
-		    		}
+	    			userData.setDepartureDate(departureDate);
 	    		}
 	    		
 	    		userData.setHasCar(carYes.getValue().booleanValue());

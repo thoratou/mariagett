@@ -8,10 +8,13 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.tt.mariage.client.data.Person.Menu;
 import com.tt.mariage.client.services.RetrieveData;
 import com.tt.mariage.client.services.RetrieveData.Status;
 import com.tt.mariage.client.services.RetrieveService;
@@ -82,6 +85,7 @@ public class RetrieveServiceImpl extends RemoteServiceServlet implements
 	    }
 		
 		if(datafile != null && !"".equals(datafile)){
+			// save file => retrieve data
 			Builder newBuilder = UserDataProtos.Blob.newBuilder();
 			
 			try {
@@ -97,16 +101,25 @@ public class RetrieveServiceImpl extends RemoteServiceServlet implements
 			} catch (IOException e) {
 				retrieveData.setStatus(Status.InternalError);
 				retrieveData.setMessage(commonService.convertException(e));
+			} catch (ParseException e) {
+				retrieveData.setStatus(Status.InternalError);
+				retrieveData.setMessage(commonService.convertException(e));
 			}
-			
-			
+		}
+		else{
+			//no save file => set default data
+			userData.setMail(mail);
+			userData.setPersonList(new ArrayList<com.tt.mariage.client.data.Person>());
+			userData.setWantHotelBooking(false);
+			userData.setHasCar(false);
+			retrieveData.setStatus(Status.RetrieveOK);
 		}
 
 	    
 	    return retrieveData;
 	}
 
-	private void fillFromDataFile(Builder newBuilder, UserData userData) {
+	private void fillFromDataFile(Builder newBuilder, UserData userData) throws ParseException {
 		userData.setMail(newBuilder.getMail());
 		
 		ArrayList<com.tt.mariage.client.data.Person> personList = new ArrayList<com.tt.mariage.client.data.Person>();
@@ -117,17 +130,21 @@ public class RetrieveServiceImpl extends RemoteServiceServlet implements
 			person.setName(next.getLastName());
 			person.setFirstname(next.getFirstName());
 			person.setInfant(next.getIsInfant());
-			if(next.hasMenu())
-				person.setMenu(next.getMenu());
+			person.setMenu(Menu.values()[next.getMenu().ordinal()]);
 			personList.add(person);
 		}
 		userData.setPersonList(personList);
 		
 		userData.setWantHotelBooking(newBuilder.getIsBookHotel());
-		if(newBuilder.hasArrivalDate())
-			userData.setArrivalDate(newBuilder.getArrivalDate());
-		if(newBuilder.hasDepartureDate())
-			userData.setDepartureDate(newBuilder.getDepartureDate());
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMdd");
+
+		if(newBuilder.hasArrivalDate()){
+			userData.setArrivalDate(dateFormat.parse(newBuilder.getArrivalDate()));
+		}
+		if(newBuilder.hasDepartureDate()){
+			userData.setDepartureDate(dateFormat.parse(newBuilder.getDepartureDate()));
+		}
 		
 		userData.setHasCar(newBuilder.getHasCar());
 		if(newBuilder.hasFreePlaces())

@@ -1,6 +1,7 @@
 package com.tt.mariage.client.services;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.tt.mariage.client.data.Person;
@@ -10,8 +11,8 @@ public class UserData implements IsSerializable {
 	private String mail;
 	private ArrayList<Person> personList;
 	private boolean wantHotelBooking;
-	private String arrivalDate;
-	private String departureDate;
+	private Date arrivalDate;
+	private Date departureDate;
 	private boolean hasCar;	
 	private String freePlaces;
 	private String phoneNumber;
@@ -43,19 +44,19 @@ public class UserData implements IsSerializable {
 		this.wantHotelBooking = wantHotelBooking;
 	}
 	
-	public String getArrivalDate() {
+	public Date getArrivalDate() {
 		return arrivalDate;
 	}
 
-	public void setArrivalDate(String arrivalDate) {
+	public void setArrivalDate(Date arrivalDate) {
 		this.arrivalDate = arrivalDate;
 	}
 
-	public String getDepartureDate() {
+	public Date getDepartureDate() {
 		return departureDate;
 	}
 
-	public void setDepartureDate(String departureDate) {
+	public void setDepartureDate(Date departureDate) {
 		this.departureDate = departureDate;
 	}
 

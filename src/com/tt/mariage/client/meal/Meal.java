@@ -152,7 +152,7 @@ public class Meal extends PersonCellTable{
 	
 	private void createMealColumn() {
 		//meal choice cell
-		List<String> meals = new ArrayList<String>();
+		final List<String> meals = new ArrayList<String>();
 		meals.add("");
 		meals.add(mealConstants.fishMenuText());
 		meals.add(mealConstants.meatMenuText());
@@ -160,12 +160,13 @@ public class Meal extends PersonCellTable{
         addColumn(personCellTable, new SelectionCell(meals), mealConstants.mealText(), new GetValue<String>() {
         	@Override
         	public String getValue(Person person) {
-        		return person.getMenu();
+        		return meals.get(person.getMenu().ordinal());
         	}
         }, new FieldUpdater<Person, String>() {
+        	
         	@Override
         	public void update(int index, Person person, String value) {
-        		pendingChanges.add(PersonChange.createMenuCommiter(person, value));
+        		pendingChanges.add(PersonChange.createMenuCommiter(person, value, meals));
         	}
         });
 	}

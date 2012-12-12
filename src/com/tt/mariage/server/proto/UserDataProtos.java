@@ -81,6 +81,81 @@ public final class UserDataProtos {
       return com.tt.mariage.server.proto.UserDataProtos.internal_static_tutorial_Blob_fieldAccessorTable;
     }
     
+    public enum MenuType
+        implements com.google.protobuf.ProtocolMessageEnum {
+      NOMENU(0, 0),
+      FISHMENU(1, 1),
+      MEATMENU(2, 2),
+      CHILDMENU(3, 3),
+      ;
+      
+      public static final int NOMENU_VALUE = 0;
+      public static final int FISHMENU_VALUE = 1;
+      public static final int MEATMENU_VALUE = 2;
+      public static final int CHILDMENU_VALUE = 3;
+      
+      
+      public final int getNumber() { return value; }
+      
+      public static MenuType valueOf(int value) {
+        switch (value) {
+          case 0: return NOMENU;
+          case 1: return FISHMENU;
+          case 2: return MEATMENU;
+          case 3: return CHILDMENU;
+          default: return null;
+        }
+      }
+      
+      public static com.google.protobuf.Internal.EnumLiteMap<MenuType>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static com.google.protobuf.Internal.EnumLiteMap<MenuType>
+          internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<MenuType>() {
+              public MenuType findValueByNumber(int number) {
+                return MenuType.valueOf(number);
+              }
+            };
+      
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(index);
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.tt.mariage.server.proto.UserDataProtos.Blob.getDescriptor().getEnumTypes().get(0);
+      }
+      
+      private static final MenuType[] VALUES = {
+        NOMENU, FISHMENU, MEATMENU, CHILDMENU, 
+      };
+      
+      public static MenuType valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+      
+      private final int index;
+      private final int value;
+      
+      private MenuType(int index, int value) {
+        this.index = index;
+        this.value = value;
+      }
+      
+      // @@protoc_insertion_point(enum_scope:tutorial.Blob.MenuType)
+    }
+    
     public interface PersonOrBuilder
         extends com.google.protobuf.MessageOrBuilder {
       
@@ -96,9 +171,9 @@ public final class UserDataProtos {
       boolean hasIsInfant();
       boolean getIsInfant();
       
-      // optional string menu = 4;
+      // required .tutorial.Blob.MenuType menu = 4 [default = NOMENU];
       boolean hasMenu();
-      String getMenu();
+      com.tt.mariage.server.proto.UserDataProtos.Blob.MenuType getMenu();
     }
     public static final class Person extends
         com.google.protobuf.GeneratedMessage
@@ -203,43 +278,21 @@ public final class UserDataProtos {
         return isInfant_;
       }
       
-      // optional string menu = 4;
+      // required .tutorial.Blob.MenuType menu = 4 [default = NOMENU];
       public static final int MENU_FIELD_NUMBER = 4;
-      private java.lang.Object menu_;
+      private com.tt.mariage.server.proto.UserDataProtos.Blob.MenuType menu_;
       public boolean hasMenu() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
-      public String getMenu() {
-        java.lang.Object ref = menu_;
-        if (ref instanceof String) {
-          return (String) ref;
-        } else {
-          com.google.protobuf.ByteString bs = 
-              (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
-          if (com.google.protobuf.Internal.isValidUtf8(bs)) {
-            menu_ = s;
-          }
-          return s;
-        }
-      }
-      private com.google.protobuf.ByteString getMenuBytes() {
-        java.lang.Object ref = menu_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8((String) ref);
-          menu_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+      public com.tt.mariage.server.proto.UserDataProtos.Blob.MenuType getMenu() {
+        return menu_;
       }
       
       private void initFields() {
         lastName_ = "";
         firstName_ = "";
         isInfant_ = false;
-        menu_ = "";
+        menu_ = com.tt.mariage.server.proto.UserDataProtos.Blob.MenuType.NOMENU;
       }
       private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
@@ -255,6 +308,10 @@ public final class UserDataProtos {
           return false;
         }
         if (!hasIsInfant()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+        if (!hasMenu()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -275,7 +332,7 @@ public final class UserDataProtos {
           output.writeBool(3, isInfant_);
         }
         if (((bitField0_ & 0x00000008) == 0x00000008)) {
-          output.writeBytes(4, getMenuBytes());
+          output.writeEnum(4, menu_.getNumber());
         }
         getUnknownFields().writeTo(output);
       }
@@ -300,7 +357,7 @@ public final class UserDataProtos {
         }
         if (((bitField0_ & 0x00000008) == 0x00000008)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(4, getMenuBytes());
+            .computeEnumSize(4, menu_.getNumber());
         }
         size += getUnknownFields().getSerializedSize();
         memoizedSerializedSize = size;
@@ -432,7 +489,7 @@ public final class UserDataProtos {
           bitField0_ = (bitField0_ & ~0x00000002);
           isInfant_ = false;
           bitField0_ = (bitField0_ & ~0x00000004);
-          menu_ = "";
+          menu_ = com.tt.mariage.server.proto.UserDataProtos.Blob.MenuType.NOMENU;
           bitField0_ = (bitField0_ & ~0x00000008);
           return this;
         }
@@ -533,6 +590,10 @@ public final class UserDataProtos {
             
             return false;
           }
+          if (!hasMenu()) {
+            
+            return false;
+          }
           return true;
         }
         
@@ -574,9 +635,15 @@ public final class UserDataProtos {
                 isInfant_ = input.readBool();
                 break;
               }
-              case 34: {
-                bitField0_ |= 0x00000008;
-                menu_ = input.readBytes();
+              case 32: {
+                int rawValue = input.readEnum();
+                com.tt.mariage.server.proto.UserDataProtos.Blob.MenuType value = com.tt.mariage.server.proto.UserDataProtos.Blob.MenuType.valueOf(rawValue);
+                if (value == null) {
+                  unknownFields.mergeVarintField(4, rawValue);
+                } else {
+                  bitField0_ |= 0x00000008;
+                  menu_ = value;
+                }
                 break;
               }
             }
@@ -678,40 +745,28 @@ public final class UserDataProtos {
           return this;
         }
         
-        // optional string menu = 4;
-        private java.lang.Object menu_ = "";
+        // required .tutorial.Blob.MenuType menu = 4 [default = NOMENU];
+        private com.tt.mariage.server.proto.UserDataProtos.Blob.MenuType menu_ = com.tt.mariage.server.proto.UserDataProtos.Blob.MenuType.NOMENU;
         public boolean hasMenu() {
           return ((bitField0_ & 0x00000008) == 0x00000008);
         }
-        public String getMenu() {
-          java.lang.Object ref = menu_;
-          if (!(ref instanceof String)) {
-            String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
-            menu_ = s;
-            return s;
-          } else {
-            return (String) ref;
-          }
+        public com.tt.mariage.server.proto.UserDataProtos.Blob.MenuType getMenu() {
+          return menu_;
         }
-        public Builder setMenu(String value) {
+        public Builder setMenu(com.tt.mariage.server.proto.UserDataProtos.Blob.MenuType value) {
           if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+            throw new NullPointerException();
+          }
+          bitField0_ |= 0x00000008;
           menu_ = value;
           onChanged();
           return this;
         }
         public Builder clearMenu() {
           bitField0_ = (bitField0_ & ~0x00000008);
-          menu_ = getDefaultInstance().getMenu();
+          menu_ = com.tt.mariage.server.proto.UserDataProtos.Blob.MenuType.NOMENU;
           onChanged();
           return this;
-        }
-        void setMenu(com.google.protobuf.ByteString value) {
-          bitField0_ |= 0x00000008;
-          menu_ = value;
-          onChanged();
         }
         
         // @@protoc_insertion_point(builder_scope:tutorial.Blob.Person)
@@ -1939,15 +1994,18 @@ public final class UserDataProtos {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016userdata.proto\022\010tutorial\"\227\002\n\004Blob\022\014\n\004m" +
+      "\n\016userdata.proto\022\010tutorial\"\373\002\n\004Blob\022\014\n\004m" +
       "ail\030\001 \002(\t\022%\n\006person\030\002 \003(\0132\025.tutorial.Blo" +
       "b.Person\022\023\n\013isBookHotel\030\003 \002(\010\022\023\n\013arrival" +
       "Date\030\004 \001(\t\022\025\n\rdepartureDate\030\005 \001(\t\022\016\n\006has" +
       "Car\030\006 \002(\010\022\022\n\nfreePlaces\030\007 \001(\t\022\023\n\013phoneNu" +
-      "mber\030\010 \001(\t\022\021\n\totherInfo\030\t \001(\t\032M\n\006Person\022" +
+      "mber\030\010 \001(\t\022\021\n\totherInfo\030\t \001(\t\032n\n\006Person\022" +
       "\020\n\010lastName\030\001 \002(\t\022\021\n\tfirstName\030\002 \002(\t\022\020\n\010" +
-      "isInfant\030\003 \002(\010\022\014\n\004menu\030\004 \001(\tB-\n\033com.tt.m" +
-      "ariage.server.protoB\016UserDataProtos"
+      "isInfant\030\003 \002(\010\022-\n\004menu\030\004 \002(\0162\027.tutorial." +
+      "Blob.MenuType:\006NOMENU\"A\n\010MenuType\022\n\n\006NOM" +
+      "ENU\020\000\022\014\n\010FISHMENU\020\001\022\014\n\010MEATMENU\020\002\022\r\n\tCHI",
+      "LDMENU\020\003B-\n\033com.tt.mariage.server.protoB" +
+      "\016UserDataProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
