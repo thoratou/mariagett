@@ -47,6 +47,7 @@ public class Logistic {
 	final RadioButton carNo = new RadioButton("Car", logisticConstants.noText());
 	final TextBox carFreePlaceNumber = new TextBox();
 	
+	final TextBox phoneNumber = new TextBox();
 	final TextArea textArea = new TextArea();
 
 	public Logistic(UserDataHandler userDataHandler) {
@@ -121,25 +122,31 @@ public class Logistic {
 	    layout.setWidget(8, 0, new HTML("<br/><hr><br/>"));
 	    layout.getFlexCellFormatter().setColSpan(8, 0, 2);
 	    
+	    /// Phone number
+	    HTML phoneNumberQuestion = new HTML(logisticConstants.phoneNumberQuestion());
+
+		layout.setWidget(9, 0, phoneNumberQuestion);	
+	    layout.setWidget(9, 1, phoneNumber);	
+	    
 	    /// Other
 
-	    layout.setWidget(9, 0, new HTML(logisticConstants.otherInfo()));
-	    layout.getFlexCellFormatter().setColSpan(9, 0, 2);
+	    layout.setWidget(10, 0, new HTML(logisticConstants.otherInfo()));
+	    layout.getFlexCellFormatter().setColSpan(10, 0, 2);
 	    
 	    textArea.setVisibleLines(8);
 	    textArea.setWidth("95%");
-	    layout.setWidget(10, 0, textArea);
-	    layout.getFlexCellFormatter().setColSpan(10, 0, 2);
+	    layout.setWidget(11, 0, textArea);
+	    layout.getFlexCellFormatter().setColSpan(11, 0, 2);
 	    
 	    /// Save
-	    layout.setWidget(11, 0, saveMessage);
-	    layout.getFlexCellFormatter().setColSpan(11, 0, 2);
+	    layout.setWidget(12, 0, saveMessage);
+	    layout.getFlexCellFormatter().setColSpan(12, 0, 2);
 	    saveMessage.setVisible(false);
 	    
 		HorizontalPanel buttonPanel = new HorizontalPanel();
 		createButtons(buttonPanel);
-	    layout.setWidget(12, 0, buttonPanel);
-	    layout.getFlexCellFormatter().setColSpan(12, 0, 2);
+	    layout.setWidget(13, 0, buttonPanel);
+	    layout.getFlexCellFormatter().setColSpan(13, 0, 2);
 	    
 		DecoratorPanel panel = new DecoratorPanel();
 		panel.setWidth("100%");
@@ -172,6 +179,7 @@ public class Logistic {
 				carNo.setValue(!hasCar);
 				
 				carFreePlaceNumber.setValue(userData.getFreePlaces());
+				phoneNumber.setValue(userData.getPhoneNumber());
 				textArea.setValue(userData.getOtherInfo());
 			}
 		});
@@ -202,6 +210,7 @@ public class Logistic {
 	    		userData.setHasCar(carYes.getValue().booleanValue());
 	    		userData.setFreePlaces(carFreePlaceNumber.getValue());
 	    		
+	    		userData.setPhoneNumber(phoneNumber.getValue());
 	    		userData.setOtherInfo(textArea.getValue());
 	    		
 	    		saveService.save(userDataHandler.getUserData(), new AsyncCallback<SaveData>(){
