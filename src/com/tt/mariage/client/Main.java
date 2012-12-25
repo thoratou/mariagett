@@ -1,8 +1,12 @@
 package com.tt.mariage.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.tt.mariage.client.data.PersonTableHandler;
@@ -15,6 +19,13 @@ import com.tt.mariage.client.services.UserData;
 
 
 public class Main implements EntryPoint {
+	
+	public interface ImageResources extends ClientBundle {	 
+	    public static final ImageResources INSTANCE = GWT.create(ImageResources.class);
+	 
+	    @Source("ban.png")
+	    ImageResource ban();	 
+	}
 
 	public void onModuleLoad() {
 		
@@ -30,6 +41,10 @@ public class Main implements EntryPoint {
 		
 		VerticalPanel generalPanel = new VerticalPanel();
 		generalPanel.setWidth("100%");
+		
+		//Ban
+		Image banImage = new Image(ImageResources.INSTANCE.ban());
+		generalPanel.add(banImage);
 		
 		//General info part
 		VerticalPanel infoPanel = new VerticalPanel();
