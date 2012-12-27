@@ -79,7 +79,7 @@ public class Information extends PersonCellTable{
 
 	    // Add a title to the form
 	    layout.setHTML(0, 0, "<b>"+informationConstants.headerText()+"</b><hr>");
-	    layout.setHTML(1, 0, informationConstants.userMessageText());
+	    layout.setHTML(1, 0, informationConstants.userMessageText()+"<br/><hr>");
 
 	    // Add some standard form options
 	    layout.setWidget(2, 0, personCellTable);

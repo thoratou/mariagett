@@ -64,6 +64,8 @@ public class Logistic {
 	    /// Title
 	    layout.setHTML(0, 0, "<b>"+logisticConstants.headerText()+"</b><hr>");
 	    layout.getFlexCellFormatter().setColSpan(0, 0, 2);
+	    layout.setHTML(1, 0, logisticConstants.userMessageText()+"<br/><hr>");
+	    layout.getFlexCellFormatter().setColSpan(1, 0, 2);
 	    
 		/// Hotel line
 		HTML hotelQuestion = new HTML(logisticConstants.hotelQuestion());
@@ -73,31 +75,31 @@ public class Logistic {
 		hotelLine.add(hotelYes);
 		hotelLine.add(hotelNo);
 	    
-		layout.setWidget(1, 0, hotelQuestion);
-	    layout.setWidget(1, 1, hotelLine);
+		layout.setWidget(2, 0, hotelQuestion);
+	    layout.setWidget(2, 1, hotelLine);
 	    
 	    ///Date question
 	    HTML dateQuestion = new HTML(logisticConstants.dateQuestion());
-	    layout.setWidget(2, 0, dateQuestion);
-	    layout.getFlexCellFormatter().setColSpan(2, 0, 2);
+	    layout.setWidget(3, 0, dateQuestion);
+	    layout.getFlexCellFormatter().setColSpan(3, 0, 2);
 		
 	    /// Arrival DateBox
 	    @SuppressWarnings("deprecation")
 		DateTimeFormat dateFormat = DateTimeFormat.getMediumDateFormat();
 	    arrivalDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
 
-		layout.setWidget(3, 0, new HTML(logisticConstants.arrivalDateText()));	
-	    layout.setWidget(3, 1, arrivalDateBox);	
+		layout.setWidget(4, 0, new HTML(logisticConstants.arrivalDateText()));	
+	    layout.setWidget(4, 1, arrivalDateBox);	
 
 	    /// Departure DateBox
 	    departureDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
 	    
-		layout.setWidget(4, 0, new HTML(logisticConstants.departureDateText()));	
-	    layout.setWidget(4, 1, departureDateBox);
+		layout.setWidget(5, 0, new HTML(logisticConstants.departureDateText()));	
+	    layout.setWidget(5, 1, departureDateBox);
 	    
 	    ///br
-	    layout.setWidget(5, 0, new HTML("<br/><hr><br/>"));
-	    layout.getFlexCellFormatter().setColSpan(5, 0, 2);
+	    layout.setWidget(6, 0, new HTML("<br/><hr><br/>"));
+	    layout.getFlexCellFormatter().setColSpan(6, 0, 2);
 	    
 	    /// Car line
 	    HTML carQuestion = new HTML(logisticConstants.carQuestion());
@@ -107,46 +109,46 @@ public class Logistic {
 		carLine.add(carYes);
 		carLine.add(carNo);
 	    
-		layout.setWidget(6, 0, carQuestion);
-	    layout.setWidget(6, 1, carLine);
+		layout.setWidget(7, 0, carQuestion);
+	    layout.setWidget(7, 1, carLine);
 				
 	    HTML carDetailsQuestion = new HTML(logisticConstants.freePlacesQuestion());
 
 		HorizontalPanel carDetails =  new HorizontalPanel();
 		carDetails.add(carFreePlaceNumber);
 
-		layout.setWidget(7, 0, carDetailsQuestion);	
-	    layout.setWidget(7, 1, carDetails);	
+		layout.setWidget(8, 0, carDetailsQuestion);	
+	    layout.setWidget(8, 1, carDetails);	
 	    
 	    ///br
-	    layout.setWidget(8, 0, new HTML("<br/><hr><br/>"));
-	    layout.getFlexCellFormatter().setColSpan(8, 0, 2);
+	    layout.setWidget(9, 0, new HTML("<br/><hr><br/>"));
+	    layout.getFlexCellFormatter().setColSpan(9, 0, 2);
 	    
 	    /// Phone number
 	    HTML phoneNumberQuestion = new HTML(logisticConstants.phoneNumberQuestion());
 
-		layout.setWidget(9, 0, phoneNumberQuestion);	
-	    layout.setWidget(9, 1, phoneNumber);	
+		layout.setWidget(10, 0, phoneNumberQuestion);	
+	    layout.setWidget(10, 1, phoneNumber);	
 	    
 	    /// Other
 
-	    layout.setWidget(10, 0, new HTML(logisticConstants.otherInfo()));
-	    layout.getFlexCellFormatter().setColSpan(10, 0, 2);
+	    layout.setWidget(11, 0, new HTML(logisticConstants.otherInfo()));
+	    layout.getFlexCellFormatter().setColSpan(11, 0, 2);
 	    
 	    textArea.setVisibleLines(8);
 	    textArea.setWidth("95%");
-	    layout.setWidget(11, 0, textArea);
-	    layout.getFlexCellFormatter().setColSpan(11, 0, 2);
+	    layout.setWidget(12, 0, textArea);
+	    layout.getFlexCellFormatter().setColSpan(12, 0, 2);
 	    
 	    /// Save
-	    layout.setWidget(12, 0, saveMessage);
-	    layout.getFlexCellFormatter().setColSpan(12, 0, 2);
+	    layout.setWidget(13, 0, saveMessage);
+	    layout.getFlexCellFormatter().setColSpan(13, 0, 2);
 	    saveMessage.setVisible(false);
 	    
 		HorizontalPanel buttonPanel = new HorizontalPanel();
 		createButtons(buttonPanel);
-	    layout.setWidget(13, 0, buttonPanel);
-	    layout.getFlexCellFormatter().setColSpan(13, 0, 2);
+	    layout.setWidget(14, 0, buttonPanel);
+	    layout.getFlexCellFormatter().setColSpan(14, 0, 2);
 	    
 		DecoratorPanel panel = new DecoratorPanel();
 		panel.setWidth("100%");

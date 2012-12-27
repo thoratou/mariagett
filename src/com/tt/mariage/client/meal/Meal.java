@@ -72,13 +72,13 @@ public class Meal extends PersonCellTable{
 	    cellFormatter.setColSpan(0, 0, 2);
 
 	    // Add a title to the form
-	    //layout.setWidget(0, 0, headerLabel);
 	    layout.setHTML(0, 0, "<b>"+mealConstants.headerText()+"</b><hr>");
+	    layout.setHTML(1, 0, mealConstants.userMessageText()+"<br/><hr>");
 	    
 	    // Add some standard form options
-	    layout.setWidget(1, 0, personCellTable);
-	    layout.setWidget(2, 0, saveMessage);	    
-	    layout.setWidget(3, 0, buttonPanel);
+	    layout.setWidget(2, 0, personCellTable);
+	    layout.setWidget(3, 0, saveMessage);	    
+	    layout.setWidget(4, 0, buttonPanel);
 		
 		DecoratorPanel panel = new DecoratorPanel();
 		panel.setWidth("100%");
