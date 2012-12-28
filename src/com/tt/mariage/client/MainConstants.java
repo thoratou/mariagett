@@ -4,4 +4,6 @@ import com.google.gwt.i18n.client.Constants;
 
 public interface MainConstants extends Constants {
 	String menuFile();
+	
+	String general();
 }

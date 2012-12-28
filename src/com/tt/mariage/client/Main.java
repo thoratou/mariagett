@@ -5,6 +5,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.DecoratorPanel;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -15,7 +17,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.tt.mariage.client.data.PersonTableHandler;
 import com.tt.mariage.client.data.UserDataHandler;
 import com.tt.mariage.client.information.Information;
-import com.tt.mariage.client.information.InformationConstants;
 import com.tt.mariage.client.login.Login;
 import com.tt.mariage.client.logistic.Logistic;
 import com.tt.mariage.client.meal.Meal;
@@ -59,11 +60,15 @@ public class Main implements EntryPoint {
 		Image banImage = new Image(ImageResources.INSTANCE.ban());
 		generalPanel.add(banImage);
 		
-		//People + Meal panel
+		//General info
+		
+		
+		//People + Meal + Info panel
 		HorizontalPanel firstPanel = new HorizontalPanel();
 		firstPanel.setWidth("1116px");
 		firstPanel.setSpacing(30);
 		VerticalPanel firstVertical = new VerticalPanel();
+		firstVertical.setWidth("550px");
 		
 		//General info part
 		VerticalPanel infoPanel = new VerticalPanel();
@@ -91,6 +96,9 @@ public class Main implements EntryPoint {
 		
 		firstPanel.add(firstVertical);
 		
+		//Menu + Hotel pricing
+		VerticalPanel secondVertical = new VerticalPanel();
+		
 		// menu image
 		String menuFile = mainConstants.menuFile();
 		Image menuImage = null;
@@ -101,11 +109,23 @@ public class Main implements EntryPoint {
 			menuImage = new Image(ImageResources.INSTANCE.menuEn());
 		}
 		
+		//hotel pricing
+		DecoratorPanel hotelPanel = new DecoratorPanel();
+		hotelPanel.setWidth("100%");
+		FlexTable hotelTable = new FlexTable();
+		hotelTable.setCellSpacing(6);
+		hotelTable.setWidget(0, 0, new HTML(mainConstants.general()));
+		hotelPanel.setWidget(hotelTable);
+		
 		if(menuImage != null){
-			firstPanel.setCellHorizontalAlignment(menuImage, HasHorizontalAlignment.ALIGN_RIGHT);
-			firstPanel.setCellVerticalAlignment(menuImage, HasVerticalAlignment.ALIGN_TOP);
-			firstPanel.add(menuImage);
+			secondVertical.setCellHorizontalAlignment(menuImage, HasHorizontalAlignment.ALIGN_RIGHT);
+			secondVertical.setCellVerticalAlignment(menuImage, HasVerticalAlignment.ALIGN_TOP);
+			secondVertical.add(menuImage);
 		}
+		secondVertical.add(new HTML("<br/><br/>"));
+		secondVertical.add(hotelPanel);
+		
+		firstPanel.add(secondVertical);
 
 		///Assembly
 		generalPanel.add(firstPanel);
