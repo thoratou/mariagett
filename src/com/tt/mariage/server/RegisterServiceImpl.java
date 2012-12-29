@@ -68,6 +68,10 @@ public class RegisterServiceImpl extends RemoteServiceServlet implements
 	private CommonService commonService = new CommonService();
 
 	public RegisterInfo register(String mail) {
+		if(mail != null){
+			mail = mail.toLowerCase().trim();	
+		}
+		
 		RegisterInfo registerInfo = new RegisterInfo();
 	
 	    if((mail == null) || ("".equals(mail))){

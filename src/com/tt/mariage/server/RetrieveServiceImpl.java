@@ -34,6 +34,9 @@ public class RetrieveServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public RetrieveData retrieve(String mail) {
+		if(mail != null){
+			mail = mail.toLowerCase().trim();	
+		}
 		
 		RetrieveData retrieveData = new RetrieveData();
 		retrieveData.setStatus(Status.Undef);

@@ -26,53 +26,56 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 	private static final long serialVersionUID = 5635171032764951488L;
 
 	public LoginInfo login(String mail, String pwd) {
-		
-	currentMail = mail;
-	currentPassword = pwd;
-	
-	LoginInfo loginInfo = new LoginInfo();
-	loginInfo.setMessage("");
-	
-	try {
-		if((mail == null) || ("".equals(mail))){
-	    	loginInfo.setStatus(Status.MissingMail);
-	    	loginInfo.setMail("");
-	    }
-	    else {
-	    	if((pwd == null) || ("".equals(pwd))){ 
-	        	loginInfo.setStatus(Status.MissingPassword);    		
-	    	}
-	    	else{
-	    		retrieveLogin(loginInfo);    		
-	    	}
-	    }
-	} catch (ClassNotFoundException e) {
-    	loginInfo.setStatus(Status.InternalError);
-    	loginInfo.setMessage(commonService.convertException(e));
-	} catch (SQLException e) {
-    	loginInfo.setStatus(Status.InternalError);
-    	loginInfo.setMessage(commonService.convertException(e));
-	} catch (NoSuchAlgorithmException e) {
-    	loginInfo.setStatus(Status.InternalError);
-    	loginInfo.setMessage(commonService.convertException(e));
-	}
-    finally
-    {
-		try
-		{
-			if(connection != null){
-				connection.close();
-				connection = null;
-			}
+		if(mail != null){
+			mail = mail.toLowerCase().trim();	
 		}
-		catch(SQLException e)
-		{
+			
+		currentMail = mail;
+		currentPassword = pwd;
+		
+		LoginInfo loginInfo = new LoginInfo();
+		loginInfo.setMessage("");
+		
+		try {
+			if((mail == null) || ("".equals(mail))){
+		    	loginInfo.setStatus(Status.MissingMail);
+		    	loginInfo.setMail("");
+		    }
+		    else {
+		    	if((pwd == null) || ("".equals(pwd))){ 
+		        	loginInfo.setStatus(Status.MissingPassword);    		
+		    	}
+		    	else{
+		    		retrieveLogin(loginInfo);    		
+		    	}
+		    }
+		} catch (ClassNotFoundException e) {
+	    	loginInfo.setStatus(Status.InternalError);
+	    	loginInfo.setMessage(commonService.convertException(e));
+		} catch (SQLException e) {
+	    	loginInfo.setStatus(Status.InternalError);
+	    	loginInfo.setMessage(commonService.convertException(e));
+		} catch (NoSuchAlgorithmException e) {
+	    	loginInfo.setStatus(Status.InternalError);
 	    	loginInfo.setMessage(commonService.convertException(e));
 		}
-    }
-    
-    return loginInfo;
-  }
+	    finally
+	    {
+			try
+			{
+				if(connection != null){
+					connection.close();
+					connection = null;
+				}
+			}
+			catch(SQLException e)
+			{
+		    	loginInfo.setMessage(commonService.convertException(e));
+			}
+	    }
+	    
+	    return loginInfo;
+	}
 
 	private void retrieveLogin(LoginInfo loginInfo) throws NoSuchAlgorithmException, SQLException, ClassNotFoundException {
 		Class.forName("org.sqlite.JDBC");
@@ -113,5 +116,4 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 			}
 		}
 	}
-
 }
