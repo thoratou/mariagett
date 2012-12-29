@@ -154,9 +154,23 @@ public class RegisterServiceImpl extends RemoteServiceServlet implements
 		message.setRecipients(Message.RecipientType.TO, internetAddresses);
 		
 		//content
-		message.setSubject("test");
+		message.setSubject("Inscription sur mariagett.com");
 		
-		message.setText("password :\n"+password);
+		message.setText(
+				"Bienvenue et merci de votre inscription sur mariagett.com.\n"+
+				"Votre nouveau mot de passe est :\n\n"+
+				password+"\n\n"+
+				"Vous pouvez maintenant retourner sur le site et vous connecter en utilisant votre adresse mail et ce mot de passe.\n\n"+
+				"Cordialement\n"+
+				"   Thanh et Thomas\n\n"+
+				"-------------------------------------------------------------\n\n"+
+				"Welcome and thank you for your registration on mariagett.com.\n"+
+				"Your new password is:\n\n"+
+				password+"\n\n"+
+				"Now, you can go back on the web site and log in using your mail address and this password.\n\n"+
+				"Sincerely\n"+
+				"   Thanh and Thomas\n\n"
+				);
 		message.setHeader("X-Mailer", "Java");
 		message.setSentDate(new Date());
 		
